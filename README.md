@@ -74,7 +74,7 @@ The `run` command rebuilds before loading the app and stays attached to the simu
 
 This invokes Garmin's compiler in export mode for the project's manifest targets and writes `build/mini-chrono/mini-chrono.iq`. Install the required device definitions first. Export creates a local package; upload it separately to the existing Store listing after review.
 
-With SDK 9.3.0, the imported Chrono and Lingua manifests currently block full export because `system8preview` and `vivolife` are unrecognized product IDs. Individual supported-device builds work. Glyphs exports successfully. Resolving those legacy targets is part of the pending compatibility work; the import preserves the original device lists.
+The manifests exclude the former `system8preview` beta target and the unavailable `vivolife` definition. Per-face READMEs document compatibility exclusions.
 
 ## Working with agents
 

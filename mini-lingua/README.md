@@ -8,7 +8,7 @@ The current minimum API level is 2.1.0. Watches limited to older API levels are 
 
 ### Existing omissions requiring layout review
 
-The imported manifest omits these semi-octagonal targets:
+The manifest retains these semi-octagonal exclusions pending layout review:
 
 - `descentg1`
 - `instinct2`, `instinct2s`, `instinct2x`
@@ -18,8 +18,8 @@ The imported manifest omits these semi-octagonal targets:
 
 The original reason for these omissions is unconfirmed. They are consistent with a concern about unusual display geometry or cutouts, but have not been demonstrated to be incompatible. Retain these omissions until their layouts are checked explicitly. Check long hour/minute text as well as settings and sleep behavior; a successful compilation alone does not establish readability.
 
-### Export blockers
+### Legacy targets
 
-The imported manifest still contains `system8preview` and `vivolife`, which SDK 9.3.0 rejects during full export. These are unresolved entries, separate from the exclusions above. Individual supported-device builds work.
+`system8preview` was a System 8 beta test target and is excluded from production exports. `vivolife` is also excluded because its definition is unavailable in the current device library and SDK 9.3.0 rejects the ID. New packages no longer explicitly target it; no replacement target is assumed. Garmin has [acknowledged the missing definition](https://forums.garmin.com/developer/connect-iq/i/bug-reports/no-vivolife-device).
 
 The exact supported product IDs remain in [manifest.xml](manifest.xml). See the [repository README](../README.md) for setup, build, and export commands.
