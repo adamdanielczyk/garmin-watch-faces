@@ -1,0 +1,13 @@
+<fonts>
+    <font id="LatoBold1" filename="Lato-Bold-20.fnt" antialias="true" />
+    <font id="LatoBold2" filename="Lato-Bold-40.fnt" antialias="true" />
+    <font id="LatoBold3" filename="Lato-Bold-55.fnt" antialias="true" />
+    <font id="LatoBold4" filename="Lato-Bold-70.fnt" antialias="true" />
+    <font id="LatoBold5" filename="Lato-Bold-80.fnt" antialias="true" />
+
+    <font id="LatoRegular1" filename="Lato-Regular-20.fnt" antialias="true" />
+    <font id="LatoRegular2" filename="Lato-Regular-40.fnt" antialias="true" />
+    <font id="LatoRegular3" filename="Lato-Regular-55.fnt" antialias="true" />
+    <font id="LatoRegular4" filename="Lato-Regular-70.fnt" antialias="true" />
+    <font id="LatoRegular5" filename="Lato-Regular-80.fnt" antialias="true" />
+</fonts>

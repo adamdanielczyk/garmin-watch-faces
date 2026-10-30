@@ -1,0 +1,26 @@
+<strings>
+
+    <string id="AppName">Mini Glyphs</string>
+
+    <string id="SelectPresetColorTitle">Select a preset color</string>
+    <string id="PresetColorBlue">Blue</string>
+    <string id="PresetColorGreen">Green</string>
+    <string id="PresetColorGrey">Grey</string>
+    <string id="PresetColorOrange">Orange</string>
+    <string id="PresetColorPink">Pink</string>
+    <string id="PresetColorRed">Red</string>
+    <string id="PresetColorYellow">Yellow</string>
+
+    <string id="EnableSleepModeLayoutTitle">Enable to use simplified layout during sleep mode</string>
+
+    <string id="UseCustomColorsTitle">Enable to use custom RGB colors defined below</string>
+
+    <string id="RedHighlightColorTitle">Highlight Color - Red</string>
+    <string id="GreenHighlightColorTitle">Highlight Color - Green</string>
+    <string id="BlueHighlightColorTitle">Highlight Color - Blue</string>
+
+    <string id="RedRegularColorTitle">Regular Color - Red</string>
+    <string id="GreenRegularColorTitle">Regular Color - Green</string>
+    <string id="BlueRegularColorTitle">Regular Color - Blue</string>
+
+</strings>

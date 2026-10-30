@@ -1,0 +1,43 @@
+<strings>
+
+    <string id="AppName">Mini Chrono</string>
+
+    <string id="HideHourLeadingZeroTitle">Enable to hide hour leading zero</string>
+    <string id="UseVerticalLayoutTitle">Enable to use vertical layout</string>
+
+    <string id="SelectPresetColorTitle">Select a preset color</string>
+    <string id="PresetColorBlue">Blue</string>
+    <string id="PresetColorGreen">Green</string>
+    <string id="PresetColorGrey">Grey</string>
+    <string id="PresetColorOrange">Orange</string>
+    <string id="PresetColorPink">Pink</string>
+    <string id="PresetColorRed">Red</string>
+    <string id="PresetColorYellow">Yellow</string>
+
+    <string id="UseCustomColorsTitle">Enable to use custom RGB colors defined below</string>
+
+    <string id="RedHourColorTitle">Hour Color - Red</string>
+    <string id="GreenHourColorTitle">Hour Color - Green</string>
+    <string id="BlueHourColorTitle">Hour Color - Blue</string>
+
+    <string id="RedMinutesColorTitle">Minutes Color - Red</string>
+    <string id="GreenMinutesColorTitle">Minutes Color - Green</string>
+    <string id="BlueMinutesColorTitle">Minutes Color - Blue</string>
+
+    <string id="SelectFontTitle">Select font</string>
+    <string id="FontCourierPrime">Courier Prime</string>
+    <string id="FontInter">Inter</string>
+    <string id="FontMonofett">Monofett</string>
+    <string id="FontTiltNeon">Tilt Neon</string>
+    <string id="FontTourney">Tourney</string>
+
+    <string id="SelectFontSizeTitle">Select font size</string>
+    <string id="SizeExtraSmall">Extra Small</string>
+    <string id="SizeSmall">Small</string>
+    <string id="SizeMedium">Medium</string>
+    <string id="SizeLarge">Large</string>
+    <string id="SizeExtraLarge">Extra Large</string>
+
+    <string id="ShowBatteryTitle">Show battery icon</string>
+
+</strings>

@@ -1,0 +1,31 @@
+<fonts>
+    <font id="CourierPrime1" filename="CourierPrime-Regular-30.fnt" antialias="true" />
+    <font id="CourierPrime2" filename="CourierPrime-Regular-60.fnt" antialias="true" />
+    <font id="CourierPrime3" filename="CourierPrime-Regular-90.fnt" antialias="true" />
+    <font id="CourierPrime4" filename="CourierPrime-Regular-120.fnt" antialias="true" />
+    <font id="CourierPrime5" filename="CourierPrime-Regular-150.fnt" antialias="true" />
+
+    <font id="Inter1" filename="Inter-Regular-30.fnt" antialias="true" />
+    <font id="Inter2" filename="Inter-Regular-60.fnt" antialias="true" />
+    <font id="Inter3" filename="Inter-Regular-90.fnt" antialias="true" />
+    <font id="Inter4" filename="Inter-Regular-120.fnt" antialias="true" />
+    <font id="Inter5" filename="Inter-Regular-150.fnt" antialias="true" />
+
+    <font id="Monofett1" filename="Monofett-Regular-30.fnt" antialias="true" />
+    <font id="Monofett2" filename="Monofett-Regular-60.fnt" antialias="true" />
+    <font id="Monofett3" filename="Monofett-Regular-90.fnt" antialias="true" />
+    <font id="Monofett4" filename="Monofett-Regular-120.fnt" antialias="true" />
+    <font id="Monofett5" filename="Monofett-Regular-150.fnt" antialias="true" />
+
+    <font id="TiltNeon1" filename="TiltNeon-Regular-30.fnt" antialias="true" />
+    <font id="TiltNeon2" filename="TiltNeon-Regular-60.fnt" antialias="true" />
+    <font id="TiltNeon3" filename="TiltNeon-Regular-90.fnt" antialias="true" />
+    <font id="TiltNeon4" filename="TiltNeon-Regular-120.fnt" antialias="true" />
+    <font id="TiltNeon5" filename="TiltNeon-Regular-150.fnt" antialias="true" />
+
+    <font id="Tourney1" filename="Tourney-Light-30.fnt" antialias="true" />
+    <font id="Tourney2" filename="Tourney-Light-60.fnt" antialias="true" />
+    <font id="Tourney3" filename="Tourney-Light-90.fnt" antialias="true" />
+    <font id="Tourney4" filename="Tourney-Light-120.fnt" antialias="true" />
+    <font id="Tourney5" filename="Tourney-Light-150.fnt" antialias="true" />
+</fonts>

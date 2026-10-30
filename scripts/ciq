@@ -1,0 +1,124 @@
+#!/usr/bin/env python3
+"""Build independent Connect IQ projects from the repository root."""
+
+import argparse
+import json
+import os
+from pathlib import Path
+import shutil
+import subprocess
+import sys
+import xml.etree.ElementTree as ET
+
+ROOT = Path(__file__).resolve().parent.parent
+FACES = ("mini-chrono", "mini-lingua", "mini-glyphs")
+NS = {"iq": "http://www.garmin.com/xml/connectiq"}
+
+
+def local_config():
+    path = ROOT / ".ciq.local.json"
+    if not path.exists():
+        return {}
+    config = json.loads(path.read_text())
+    if not isinstance(config, dict):
+        raise ValueError(".ciq.local.json must contain a JSON object.")
+    return config
+
+
+def sdk_directory():
+    configured = os.environ.get("CIQ_SDK") or local_config().get("sdk")
+    if configured:
+        return Path(configured).expanduser().resolve()
+    base = Path.home() / ("Library/Application Support/Garmin/ConnectIQ" if sys.platform == "darwin" else ".Garmin/ConnectIQ")
+    current = base / "current-sdk.cfg"
+    return Path(current.read_text().strip()).expanduser().resolve() if current.exists() else None
+
+
+def tool(name):
+    sdk = sdk_directory()
+    executable = str(sdk / "bin" / name) if sdk else shutil.which(name)
+    if not executable or not os.access(executable, os.X_OK):
+        raise ValueError(f"Cannot find {name}. Set CIQ_SDK to the SDK directory or add its bin directory to PATH.")
+    return executable
+
+
+def devices(face):
+    manifest = ET.parse(ROOT / face / "manifest.xml")
+    return [product.attrib["id"] for product in manifest.findall(".//iq:product", NS)]
+
+
+def signing_key():
+    key_value = os.environ.get("CIQ_DEVELOPER_KEY") or local_config().get("developerKey")
+    if not key_value:
+        raise ValueError("Set CIQ_DEVELOPER_KEY or developerKey in .ciq.local.json to your signing key path.")
+    key = Path(key_value).expanduser().resolve()
+    if not key.is_file():
+        raise ValueError("The configured signing key does not point to a file.")
+    if key.is_relative_to(ROOT):
+        raise ValueError("Keep the signing key outside this repository.")
+    return key
+
+
+def doctor():
+    print(f"Python: {sys.version.split()[0]}", flush=True)
+    subprocess.run([tool("monkeyc"), "-v"], check=True)
+    subprocess.run(["java", "-version"], check=True)
+    for name in ("monkeydo", "connectiq"):
+        tool(name)
+        print(f"{name}: available")
+    signing_key()
+    print("Signing key: configured and present")
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    commands = parser.add_subparsers(dest="command", required=True)
+    commands.add_parser("simulator", help="Start the Connect IQ simulator")
+    commands.add_parser("doctor", help="Check Python, Java, SDK tools, and signing key")
+    for command in ("devices", "build", "run", "export"):
+        sub = commands.add_parser(command)
+        sub.add_argument("face", choices=FACES)
+        if command in ("build", "run"):
+            sub.add_argument("device", help="Product ID from the face's manifest")
+    args = parser.parse_args()
+
+    if args.command == "doctor":
+        doctor()
+        return
+    if args.command == "simulator":
+        subprocess.run([tool("connectiq")], check=True)
+        return
+    if args.command == "devices":
+        print("\n".join(devices(args.face)))
+        return
+    if args.command in ("build", "run") and args.device not in devices(args.face):
+        raise ValueError(f"{args.device} is not supported by {args.face}. Use 'devices {args.face}' to list targets.")
+
+    compiler = tool("monkeyc")
+    runner = tool("monkeydo") if args.command == "run" else None
+    key = signing_key()
+
+    output_dir = ROOT / "build" / args.face
+    output_dir.mkdir(parents=True, exist_ok=True)
+    output = output_dir / (f"{args.face}.iq" if args.command == "export" else f"{args.device}.prg")
+    command = [compiler, "-f", "monkey.jungle", "-o", str(output), "-y", str(key)]
+    if args.command == "export":
+        command.append("-e")
+    else:
+        command.extend(["-d", args.device])
+    subprocess.run(command, cwd=ROOT / args.face, check=True)
+    if runner:
+        subprocess.run([runner, str(output), args.device], check=True)
+    print(f"Output: {output}")
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except (ValueError, OSError, ET.ParseError) as error:
+        print(f"Error: {error}", file=sys.stderr)
+        sys.exit(1)
+    except subprocess.CalledProcessError as error:
+        sys.exit(error.returncode)
+    except KeyboardInterrupt:
+        sys.exit(130)

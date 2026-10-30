@@ -1,0 +1,4 @@
+<layout id="WatchFace">
+    <drawable class="MiniChronoBackground" />
+    <drawable class="MiniChronoTime" />
+</layout>

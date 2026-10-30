@@ -1,0 +1,4 @@
+<layout id="WatchFace">
+    <drawable class="MiniGlyphsBackground" />
+    <drawable class="MiniGlyphsTime" />
+</layout>

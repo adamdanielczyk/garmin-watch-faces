@@ -1,0 +1,14 @@
+info face="Courier Prime" size=-120 bold=0 italic=0 charset="" unicode=1 stretchH=100 smooth=0 aa=1 padding=0,0,0,0 spacing=0,0 outline=0
+common lineHeight=73 base=94 scaleW=194 scaleH=218 pages=1 packed=0 alphaChnl=0 redChnl=4 greenChnl=4 blueChnl=4
+page id=0 file="CourierPrime-Regular-120_0.png"
+chars count=10
+char id=48   x=0     y=72    width=50    height=73    xoffset=11    yoffset=0    xadvance=72    page=0  chnl=15
+char id=49   x=54    y=0     width=48    height=72    xoffset=13    yoffset=0    xadvance=72    page=0  chnl=15
+char id=50   x=99    y=72    width=48    height=72    xoffset=11    yoffset=0    xadvance=72    page=0  chnl=15
+char id=51   x=98    y=144   width=48    height=73    xoffset=11    yoffset=0    xadvance=72    page=0  chnl=15
+char id=52   x=0     y=0     width=54    height=72    xoffset=9     yoffset=0    xadvance=72    page=0  chnl=15
+char id=53   x=50    y=72    width=49    height=72    xoffset=11    yoffset=0    xadvance=72    page=0  chnl=15
+char id=54   x=0     y=145   width=49    height=73    xoffset=12    yoffset=0    xadvance=72    page=0  chnl=15
+char id=55   x=102   y=0     width=47    height=72    xoffset=13    yoffset=0    xadvance=72    page=0  chnl=15
+char id=56   x=146   y=144   width=48    height=73    xoffset=12    yoffset=0    xadvance=72    page=0  chnl=15
+char id=57   x=49    y=145   width=49    height=73    xoffset=11    yoffset=0    xadvance=72    page=0  chnl=15

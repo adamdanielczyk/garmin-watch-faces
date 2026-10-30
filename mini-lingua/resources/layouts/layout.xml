@@ -1,0 +1,4 @@
+<layout id="WatchFace">
+    <drawable class="MiniLinguaBackground" />
+    <drawable class="MiniLinguaTime" />
+</layout>

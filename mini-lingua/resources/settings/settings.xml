@@ -1,0 +1,53 @@
+<settings>
+
+    <setting propertyKey="@Properties.SelectedFontSize" title="@Strings.SelectFontSizeTitle">
+        <settingConfig type="list" required="false">
+            <listEntry value="0">@Strings.SizeExtraSmall</listEntry>
+            <listEntry value="1">@Strings.SizeSmall</listEntry>
+            <listEntry value="2">@Strings.SizeMedium</listEntry>
+            <listEntry value="3">@Strings.SizeLarge</listEntry>
+            <listEntry value="4">@Strings.SizeExtraLarge</listEntry>
+        </settingConfig>
+    </setting>
+
+    <setting propertyKey="@Properties.PresetColor" title="@Strings.SelectPresetColorTitle">
+        <settingConfig type="list">
+            <listEntry value="0">@Strings.PresetColorBlue</listEntry>
+            <listEntry value="1">@Strings.PresetColorGreen</listEntry>
+            <listEntry value="2">@Strings.PresetColorGrey</listEntry>
+            <listEntry value="3">@Strings.PresetColorOrange</listEntry>
+            <listEntry value="4">@Strings.PresetColorPink</listEntry>
+            <listEntry value="5">@Strings.PresetColorRed</listEntry>
+            <listEntry value="6">@Strings.PresetColorYellow</listEntry>
+        </settingConfig>
+    </setting>
+
+    <setting propertyKey="@Properties.UseCustomColors" title="@Strings.UseCustomColorsTitle">
+        <settingConfig type="boolean" />
+    </setting>
+
+    <setting propertyKey="@Properties.RedHourColor" title="@Strings.RedHourColorTitle">
+        <settingConfig type="numeric" min="0" max="255" required="true"/>
+    </setting>
+
+    <setting propertyKey="@Properties.GreenHourColor" title="@Strings.GreenHourColorTitle">
+        <settingConfig type="numeric" min="0" max="255" required="true"/>
+    </setting>
+
+    <setting propertyKey="@Properties.BlueHourColor" title="@Strings.BlueHourColorTitle">
+        <settingConfig type="numeric" min="0" max="255" required="true"/>
+    </setting>
+
+    <setting propertyKey="@Properties.RedMinutesColor" title="@Strings.RedMinutesColorTitle">
+        <settingConfig type="numeric" min="0" max="255" required="true"/>
+    </setting>
+
+    <setting propertyKey="@Properties.GreenMinutesColor" title="@Strings.GreenMinutesColorTitle">
+        <settingConfig type="numeric" min="0" max="255" required="true"/>
+    </setting>
+
+    <setting propertyKey="@Properties.BlueMinutesColor" title="@Strings.BlueMinutesColorTitle">
+        <settingConfig type="numeric" min="0" max="255" required="true"/>
+    </setting>
+
+</settings>

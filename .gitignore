@@ -1,0 +1,13 @@
+.DS_Store
+__pycache__/
+bin/
+build/
+*.prg
+*.iq
+*.debug.xml
+*.der
+*.pem
+*.key
+.env
+.env.*
+.ciq.local.json

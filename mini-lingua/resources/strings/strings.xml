@@ -1,0 +1,117 @@
+<strings>
+
+    <string id="AppName">Mini Lingua</string>
+
+    <string id="SelectPresetColorTitle">Select a preset color</string>
+    <string id="PresetColorBlue">Blue</string>
+    <string id="PresetColorGreen">Green</string>
+    <string id="PresetColorGrey">Grey</string>
+    <string id="PresetColorOrange">Orange</string>
+    <string id="PresetColorPink">Pink</string>
+    <string id="PresetColorRed">Red</string>
+    <string id="PresetColorYellow">Yellow</string>
+
+    <string id="UseCustomColorsTitle">Enable to use custom RGB colors defined below</string>
+
+    <string id="RedHourColorTitle">Hour Color - Red</string>
+    <string id="GreenHourColorTitle">Hour Color - Green</string>
+    <string id="BlueHourColorTitle">Hour Color - Blue</string>
+
+    <string id="RedMinutesColorTitle">Minutes Color - Red</string>
+    <string id="GreenMinutesColorTitle">Minutes Color - Green</string>
+    <string id="BlueMinutesColorTitle">Minutes Color - Blue</string>
+
+    <string id="SelectFontSizeTitle">Select font size</string>
+    <string id="SizeExtraSmall">Extra Small</string>
+    <string id="SizeSmall">Small</string>
+    <string id="SizeMedium">Medium</string>
+    <string id="SizeLarge">Large</string>
+    <string id="SizeExtraLarge">Extra Large</string>
+
+    <string id="Hour0">zero</string>
+    <string id="Hour1">one</string>
+    <string id="Hour2">two</string>
+    <string id="Hour3">three</string>
+    <string id="Hour4">four</string>
+    <string id="Hour5">five</string>
+    <string id="Hour6">six</string>
+    <string id="Hour7">seven</string>
+    <string id="Hour8">eight</string>
+    <string id="Hour9">nine</string>
+    <string id="Hour10">ten</string>
+    <string id="Hour11">eleven</string>
+    <string id="Hour12">twelve</string>
+    <string id="Hour13">thirteen</string>
+    <string id="Hour14">fourteen</string>
+    <string id="Hour15">fifteen</string>
+    <string id="Hour16">sixteen</string>
+    <string id="Hour17">seventeen</string>
+    <string id="Hour18">eighteen</string>
+    <string id="Hour19">nineteen</string>
+    <string id="Hour20">twenty</string>
+    <string id="Hour21">twenty one</string>
+    <string id="Hour22">twenty two</string>
+    <string id="Hour23">twenty three</string>
+
+    <string id="Minute0"></string>
+    <string id="Minute1">one</string>
+    <string id="Minute2">two</string>
+    <string id="Minute3">three</string>
+    <string id="Minute4">four</string>
+    <string id="Minute5">five</string>
+    <string id="Minute6">six</string>
+    <string id="Minute7">seven</string>
+    <string id="Minute8">eight</string>
+    <string id="Minute9">nine</string>
+    <string id="Minute10">ten</string>
+    <string id="Minute11">eleven</string>
+    <string id="Minute12">twelve</string>
+    <string id="Minute13">thirteen</string>
+    <string id="Minute14">fourteen</string>
+    <string id="Minute15">fifteen</string>
+    <string id="Minute16">sixteen</string>
+    <string id="Minute17">seventeen</string>
+    <string id="Minute18">eighteen</string>
+    <string id="Minute19">nineteen</string>
+    <string id="Minute20">twenty</string>
+    <string id="Minute21">twenty one</string>
+    <string id="Minute22">twenty two</string>
+    <string id="Minute23">twenty three</string>
+    <string id="Minute24">twenty four</string>
+    <string id="Minute25">twenty five</string>
+    <string id="Minute26">twenty six</string>
+    <string id="Minute27">twenty seven</string>
+    <string id="Minute28">twenty eight</string>
+    <string id="Minute29">twenty nine</string>
+    <string id="Minute30">thirty</string>
+    <string id="Minute31">thirty one</string>
+    <string id="Minute32">thirty two</string>
+    <string id="Minute33">thirty three</string>
+    <string id="Minute34">thirty four</string>
+    <string id="Minute35">thirty five</string>
+    <string id="Minute36">thirty six</string>
+    <string id="Minute37">thirty seven</string>
+    <string id="Minute38">thirty eight</string>
+    <string id="Minute39">thirty nine</string>
+    <string id="Minute40">forty</string>
+    <string id="Minute41">forty one</string>
+    <string id="Minute42">forty two</string>
+    <string id="Minute43">forty three</string>
+    <string id="Minute44">forty four</string>
+    <string id="Minute45">forty five</string>
+    <string id="Minute46">forty six</string>
+    <string id="Minute47">forty seven</string>
+    <string id="Minute48">forty eight</string>
+    <string id="Minute49">forty nine</string>
+    <string id="Minute50">fifty</string>
+    <string id="Minute51">fifty one</string>
+    <string id="Minute52">fifty two</string>
+    <string id="Minute53">fifty three</string>
+    <string id="Minute54">fifty four</string>
+    <string id="Minute55">fifty five</string>
+    <string id="Minute56">fifty six</string>
+    <string id="Minute57">fifty seven</string>
+    <string id="Minute58">fifty eight</string>
+    <string id="Minute59">fifty nine</string>
+
+</strings>
