@@ -1,0 +1,4 @@
+<iq:manifest version="3" xmlns:iq="http://www.garmin.com/xml/connectiq">
+<iq:application id="1c7993ab-a651-4dca-9522-c245f7d877c1" type="watchface" name="@Strings.AppName" entry="MiniStudies" launcherIcon="@Drawables.LauncherIcon" minApiLevel="3.2.0">
+<iq:products><iq:product id="venu3"/><iq:product id="venu3s"/><iq:product id="fenix7"/></iq:products><iq:permissions/><iq:languages><iq:language>eng</iq:language></iq:languages><iq:barrels/>
+</iq:application></iq:manifest>

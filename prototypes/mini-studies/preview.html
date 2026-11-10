@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mini / watch face studies</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,sans-serif;background:#121615;color:#e8ece7}*{box-sizing:border-box}body{margin:0;padding:40px 6vw 110px}header{display:flex;justify-content:space-between;align-items:start;border-bottom:1px solid #354039;padding-bottom:24px}.brand{font-size:28px;font-weight:650;letter-spacing:-1.5px}.tag{font-size:12px;letter-spacing:2px;color:#a6b6a8;text-transform:uppercase}h1{font-size:clamp(30px,5vw,62px);font-weight:450;letter-spacing:-2px;margin:40px 0 12px}p{color:#aebbb1;line-height:1.6;max-width:760px}main{display:grid;grid-template-columns:minmax(280px,1fr) minmax(280px,1fr);gap:70px;align-items:center;margin:48px auto;max-width:1100px}.watch{background:#080a09;padding:14px;border-radius:50%;box-shadow:0 0 0 1px #3c4540,0 18px 55px #0007;aspect-ratio:1;max-width:480px;width:100%;margin:auto}svg{width:100%;display:block;background:black;border-radius:50%}.kicker{font-size:12px;letter-spacing:2px;color:#91b6a4;text-transform:uppercase}h2{font-size:32px;font-weight:450;letter-spacing:-1px}label{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:16px 0;color:#c0ccc3;font-size:14px}input,select,button{font:inherit;color:inherit;background:#222b26;border:1px solid #47564b;border-radius:7px;padding:8px}input[type=checkbox]{width:18px;height:18px;accent-color:#a3c7b2}input[type=color]{padding:2px;width:55px;height:32px}.controls{border-top:1px solid #354039;margin-top:24px;padding-top:12px}.state{font:11px/1.7 ui-monospace,monospace;white-space:pre-wrap;color:#829489;border-top:1px solid #354039;padding-top:18px;margin-top:24px}.switcher{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);display:flex;gap:16px;align-items:center;background:#dce7dc;color:#18271d;padding:10px;border-radius:40px;box-shadow:0 8px 30px #0008;white-space:nowrap}.switcher button{background:none;border:0;color:#18271d;cursor:pointer;font-size:20px;padding:0 16px}.note{font-size:12px;max-width:1000px;margin:auto;color:#829489}a{color:#b1d0bd}@media(max-width:760px){body{padding:25px 7vw 110px}main{grid-template-columns:1fr;gap:24px;margin-top:30px}.watch{max-width:360px}header .tag{max-width:130px;text-align:right}h1{letter-spacing:-1px}}
+</style>
+<header><div class="brand">mini<span style="color:#94baa5">.</span></div><div class="tag">Independent watch faces<br>Design studies / 01</div></header>
+<h1>Less on your wrist.</h1><p>Three ways forward for Mini. Compare the hierarchy, then try awkward times and the sparse sleep composition. These are design sketches, not Garmin simulator output.</p>
+<main><div class="watch"><svg id="face" viewBox="0 0 454 454" role="img" aria-label="Watch face preview"></svg></div><section><div class="kicker" id="family"></div><h2 id="title"></h2><p id="description"></p><div class="controls">
+<label>Time <input id="time" type="time" value="10:08"></label>
+<label>24-hour clock <input id="clock24" type="checkbox" checked></label>
+<label>Show day of month <input id="detail" type="checkbox" checked></label>
+<label>Sparse sleep study <input id="sleep" type="checkbox"></label>
+<label>Reference canvas <select id="size"><option value="454">454 px · Venu 3</option><option value="390">390 px · Venu 3S</option><option value="260">260 px · fēnix 7</option></select></label>
+<label>Accent <input id="accent" type="color" value="#99ccbb"></label>
+</div><div class="state" id="state"></div></section></main>
+<p class="note">Throwaway prototype · Browser typography approximates native fonts. Canvas sizes test proportions, not MIP color, sunlight visibility, Garmin font metrics, battery life, or burn-in protection. The native POC uses Garmin system fonts and a fixed accent; native layout and always-on compliance are unverified for these studies. All three native variants use the same small digital sleep layout.</p>
+<nav class="switcher" aria-label="Choose design"><button id="previous" aria-label="Previous design">←</button><span id="selected"></span><button id="next" aria-label="Next design">→</button></nav>
+<script>
+// Question: evolve numeric/word faces, or add an analog member to the Mini family?
+const variants=[
+{key:'chrono',name:'Chrono Quiet',family:'01 / Evolve Mini Chrono',description:'One typeface, two lines, one accent. Keep the time dominant and allow just the day of month underneath. A tighter default identity for the most practical member of the family.'},
+{key:'lingua',name:'Lingua Air',family:'02 / Evolve the word faces',description:'Keep only the spoken time. Five-minute phrases make room to breathe; each dot adds one minute. At 10:08, “five past ten” plus three dots means eight past. Is that extra decoding worth the calm?'},
+{key:'index',name:'Mini Index',family:'03 / A new analog face',description:'Four indices, two hands, nothing ticking. A quiet instrument with the minute hand in a muted accent. The date is optional. The strongest addition if Mini should become a coherent family.'}];
+const $=id=>document.getElementById(id);
+let variant=Math.max(0,variants.findIndex(v=>v.key===new URLSearchParams(location.search).get('variant')));
+const names=['twelve','one','two','three','four','five','six','seven','eight','nine','ten','eleven'];
+function spoken(hour,minute){const bucket=Math.floor(minute/5);return {phrase:['o’clock','five','ten','quarter','twenty','twenty five','half'][bucket>6?12-bucket:bucket]+(bucket===0?'':bucket>6?' to':' past'),hour:names[(hour+(bucket>6?1:0))%12],dots:minute%5};}
+function render(){
+ const v=variants[variant], raw=$('time').value||'10:08', [h,m]=raw.split(':').map(Number), size=+$('size').value, low=$('sleep').checked, detail=$('detail').checked, c=$('accent').value, use24=$('clock24').checked;
+ const hour=use24?h:(h%12||12), exact=String(hour).padStart(2,'0')+':'+String(m).padStart(2,'0');
+ $('family').textContent=v.family; $('title').textContent=v.name; $('description').textContent=v.description; $('selected').textContent=(variant+1)+' / 3 · '+v.name;
+ // Work in normalized coordinates; labels explicitly disclose approximation.
+ const text=(s,x,y,font,color='#f2f2e9',weight=400)=>`<text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="central" fill="${color}" font-family="Arial,sans-serif" font-size="${font}" font-weight="${weight}">${s}</text>`;
+ let svg='', phrase=spoken(h,m);
+ if(low) svg=text(exact,227+(m%3-1)*3,227,26,'#aaaaaa');
+ else if(variant===0){svg=text(String(hour).padStart(2,'0'),227,163,100)+text(String(m).padStart(2,'0'),227,272,100,c);}
+ else if(variant===1){svg=text(m<5?phrase.hour:phrase.phrase,227,173,29,c)+text(m<5?'o’clock':phrase.hour,227,241,52);for(let i=0;i<phrase.dots;i++)svg+=`<circle cx="${227+(i-(phrase.dots-1)/2)*16}" cy="300" r="2.5" fill="${c}"/>`;}
+ else {for(let i=0;i<4;i++){const a=i*Math.PI/2;svg+=`<line x1="${227+Math.sin(a)*163}" y1="${227-Math.cos(a)*163}" x2="${227+Math.sin(a)*177}" y2="${227-Math.cos(a)*177}" stroke="#f2f2e9" stroke-width="2"/>`;}
+ const hand=(a,l,color,width)=>`<line x1="227" y1="227" x2="${227+Math.sin(a)*l}" y2="${227-Math.cos(a)*l}" stroke="${color}" stroke-width="${width}"/>`;
+ svg+=hand((h%12+m/60)*Math.PI/6,100,'#f2f2e9',5)+hand(m*Math.PI/30,150,c,3)+'<circle cx="227" cy="227" r="3" fill="#f2f2e9"/>';}
+ if(detail&&!low)svg+=text('10',227,359,21);
+ $('face').innerHTML=svg;$('face').setAttribute('aria-label',v.name+' showing '+exact+(low?', sparse sleep study':''));
+ $('state').textContent=JSON.stringify({variant:v.key,time:exact,referencePixels:size,layout:low?'sparse-sleep':'awake',day:detail?'10 (sample)':'hidden',accent:c,...(variant===1?{spoken:phrase}:{}),validation:'visual approximation only'},null,2);
+ // Approximate physical scale of each reference canvas; not a device emulation.
+ document.querySelector('.watch').style.maxWidth=(size+28)+'px';
+}
+function change(delta){variant=(variant+delta+3)%3;const u=new URL(location);u.searchParams.set('variant',variants[variant].key);history.replaceState(null,'',u);render();}
+$('previous').onclick=()=>change(-1);$('next').onclick=()=>change(1);
+document.querySelectorAll('input,select').forEach(el=>el.addEventListener('input',render));
+addEventListener('keydown',e=>{if(e.target.matches('input,textarea,select,[contenteditable]'))return;if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();change(e.key==='ArrowLeft'?-1:1);}});
+addEventListener('popstate',()=>{variant=Math.max(0,variants.findIndex(v=>v.key===new URLSearchParams(location.search).get('variant')));render();});render();
+</script>
+</html>

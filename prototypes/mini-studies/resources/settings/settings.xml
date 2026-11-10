@@ -1,0 +1,5 @@
+<settings>
+<setting propertyKey="@Properties.Variant" title="Study"><settingConfig type="list"><listEntry value="0">Chrono Quiet</listEntry><listEntry value="1">Lingua Air</listEntry><listEntry value="2">Mini Index</listEntry></settingConfig></setting>
+<setting propertyKey="@Properties.Detail" title="Show date"><settingConfig type="boolean"/></setting>
+<setting propertyKey="@Properties.PreviewSleep" title="Preview sparse sleep layout"><settingConfig type="boolean"/></setting>
+</settings>
