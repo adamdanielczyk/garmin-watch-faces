@@ -1,0 +1,11 @@
+<properties>
+    <property id="Accent" type="number">2</property>
+    <property id="ShowDate" type="boolean">false</property>
+    <property id="HourMarkers" type="number">0</property>
+    <!-- Retained for existing simulator installations; HourMarkers controls rendering. -->
+    <property id="ShowAllHourMarkers" type="boolean">false</property>
+    <property id="UseCustomColor" type="boolean">false</property>
+    <property id="MinuteHandRed" type="number">255</property>
+    <property id="MinuteHandGreen" type="number">153</property>
+    <property id="MinuteHandBlue" type="number">0</property>
+</properties>

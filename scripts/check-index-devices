@@ -1,0 +1,55 @@
+#!/usr/bin/env python3
+"""Check Mini Index coverage and display profiles against installed Garmin metadata."""
+import argparse
+import json
+from pathlib import Path
+import re
+import xml.etree.ElementTree as ET
+
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--devices', type=Path, default=Path.home() / 'Library/Application Support/Garmin/ConnectIQ/Devices')
+args = parser.parse_args()
+root = Path(__file__).resolve().parent.parent
+manifest = ET.parse(root / 'mini-index/manifest.xml')
+app = manifest.find('.//{*}application')
+minimum = tuple(map(int, app.attrib['minApiLevel'].split('.')))
+declared = {p.attrib['id'] for p in manifest.findall('.//{*}product')}
+profiles = dict(re.findall(r'^([\w]+)\.excludeAnnotations\s*=\s*(.+)$', (root / 'mini-index/monkey.jungle').read_text(), re.M))
+eligible = set()
+excluded = []
+errors = []
+for path in sorted(args.devices.glob('*/compiler.json')):
+    device = json.loads(path.read_text())
+    if not any(a['type'] == 'watchFace' for a in device['appTypes']):
+        continue
+    product = device['deviceId']
+    versions = [tuple(map(int, part['connectIQVersion'].split('.'))) for part in device['partNumbers']]
+    if max(versions) < minimum:
+        excluded.append(product)
+        continue
+    eligible.add(product)
+    simulator = json.loads((path.parent / 'simulator.json').read_text())
+    display = device['displayType']
+    if display not in ('mip', 'amoled', 'lcd'):
+        errors.append(f'{product}: unreviewed display type {display}')
+        continue
+    expected = {
+        'amoled' if display == 'mip' else 'mip',
+        'color' if device['bitsPerPixel'] == 1 else 'mono',
+        'fullScreen' if 'subscreen' in simulator else 'cutout',
+    }
+    actual = set(profiles.get(product, '').split(';'))
+    if product in declared and actual != expected:
+        errors.append(f'{product}: expected excluded annotations {sorted(expected)}, got {sorted(actual)}')
+if not eligible:
+    errors.append(f'No compatible watch metadata found under {args.devices}')
+for product in sorted(eligible - declared):
+    errors.append(f'{product}: compatible watch missing from manifest; add and validate it')
+for product in sorted(declared - eligible):
+    errors.append(f'{product}: declared watch missing or below minimum API in installed metadata')
+for product in sorted(set(profiles) - declared):
+    errors.append(f'{product}: stale display profile outside manifest')
+if errors:
+    raise SystemExit('\n'.join(errors))
+print(f'PASS: all {len(declared)} compatible installed watch product IDs have correct display profiles.')
+print(f'Excluded below API {app.attrib["minApiLevel"]}: {", ".join(excluded)}')

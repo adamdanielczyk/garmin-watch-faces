@@ -1,0 +1,12 @@
+<strings>
+    <string id="AppName">Mini Index</string><string id="AccentTitle">Minute hand color</string>
+    <string id="Sage">Sage</string><string id="White">White</string><string id="Orange">Orange</string><string id="Blue">Blue</string>
+    <string id="ShowDateTitle">Show day of month</string><string id="MarkersTitle">Hour markers</string>
+    <string id="UseCustomColorTitle">Use custom minute hand color</string>
+    <string id="MinuteHandRedTitle">Minute hand red (0–255)</string>
+    <string id="MinuteHandGreenTitle">Minute hand green (0–255)</string>
+    <string id="MinuteHandBlueTitle">Minute hand blue (0–255)</string>
+    <string id="MarkersNone">None</string>
+    <string id="MarkersFour">Four</string>
+    <string id="MarkersTwelve">Twelve</string>
+</strings>

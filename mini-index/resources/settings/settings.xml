@@ -1,0 +1,15 @@
+<settings>
+    <setting propertyKey="@Properties.Accent" title="@Strings.AccentTitle"><settingConfig type="list">
+        <listEntry value="0">@Strings.Sage</listEntry><listEntry value="1">@Strings.White</listEntry><listEntry value="2">@Strings.Orange</listEntry><listEntry value="3">@Strings.Blue</listEntry>
+    </settingConfig></setting>
+    <setting propertyKey="@Properties.UseCustomColor" title="@Strings.UseCustomColorTitle"><settingConfig type="boolean"/></setting>
+    <setting propertyKey="@Properties.MinuteHandRed" title="@Strings.MinuteHandRedTitle"><settingConfig type="numeric" min="0" max="255" required="true"/></setting>
+    <setting propertyKey="@Properties.MinuteHandGreen" title="@Strings.MinuteHandGreenTitle"><settingConfig type="numeric" min="0" max="255" required="true"/></setting>
+    <setting propertyKey="@Properties.MinuteHandBlue" title="@Strings.MinuteHandBlueTitle"><settingConfig type="numeric" min="0" max="255" required="true"/></setting>
+    <setting propertyKey="@Properties.ShowDate" title="@Strings.ShowDateTitle"><settingConfig type="boolean"/></setting>
+    <setting propertyKey="@Properties.HourMarkers" title="@Strings.MarkersTitle"><settingConfig type="list">
+        <listEntry value="0">@Strings.MarkersNone</listEntry>
+        <listEntry value="4">@Strings.MarkersFour</listEntry>
+        <listEntry value="12">@Strings.MarkersTwelve</listEntry>
+    </settingConfig></setting>
+</settings>
