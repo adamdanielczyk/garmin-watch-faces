@@ -1,0 +1,18 @@
+Mini Index is a minimalist analog watch face built around two hands and a clean black background.
+
+Keep it simple with no hour markers, add four cardinal markers, or choose all twelve. Pick a minute-hand color from the orange, sage, white and blue presets, or create your own with separate red, green and blue values.
+
+Features
+• Two-hand analog time, with no seconds hand or animations.
+• Three marker options: none, four or twelve.
+• Four color presets plus custom RGB controls.
+• Optional day of the month, hidden by default.
+• A simple always-on display on compatible watches.
+• No network or sensor permissions required.
+
+The default look pairs a white hour hand with an orange minute hand, with markers and date turned off. Change your preferences in the watch face settings in Connect IQ.
+
+Display behavior
+On AMOLED and LCD watches, the low-power view uses a smaller gray dial that alternates position each minute. It hides the date and shows no markers or four markers, depending on your selection. MIP watches retain the full dial. Monochrome watches use white hands, and models with a separate sub-display use a layout that keeps the hands clear of it.
+
+See Compatible Devices for supported watches. Colors may look different depending on your watch's display.

@@ -1,0 +1,15 @@
+Mini Lingua is a minimalist watch face that writes the time in English on a black background. At 12:30, it displays “twelve” and “thirty”, with bold hours above lighter minute text.
+
+Choose your text size and colors to make the display your own. The time is shown to the minute, with longer numbers arranged across additional lines.
+
+Features
+• Hours and minutes written in English.
+• Follows your watch's 12-hour or 24-hour time setting.
+• Five font-size settings, with automatic reduction when needed to fit the display.
+• Seven color presets: blue, green, gray, orange, pink, red and yellow.
+• Separate custom RGB controls for hour and minute text.
+• No network or sensor permissions required.
+
+The default look pairs orange hours with warm white minutes. At the start of an hour, only the hour is shown. Change your preferences in the watch face settings in Connect IQ. Enable Use custom colors to apply your own red, green and blue values, from 0 to 255.
+
+The displayed time is English only. See Compatible Devices for supported watches. Colors and text size may vary with your watch's display.

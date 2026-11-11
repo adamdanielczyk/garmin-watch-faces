@@ -1,0 +1,18 @@
+Mini Glyphs is a word-clock watch face for compatible Garmin AMOLED watches. It highlights English time phrases within a grid of letters, with quieter background letters surrounding them.
+
+Read phrases such as “QUARTER PAST TEN” or “HALF PAST TWELVE”. The time is rounded to the nearest five minutes, so 10:32 reads “HALF PAST TEN” and 10:33 reads “TWENTY FIVE TO ELEVEN”.
+
+Features
+• English word-clock display in a letter grid.
+• Time rounded to the nearest five minutes.
+• Seven color presets: blue, green, gray, orange, pink, red and yellow.
+• Separate custom RGB controls for highlighted words and background letters.
+• Background-letter brightness from 0 to 100%; set it to 0 to hide the background grid.
+• A compact gray time phrase in always-on mode, alternating between upper and lower positions each minute.
+• Optional sleep layout that hides background letters during your configured sleep hours.
+
+The default color preset is orange, with background brightness set to 60%. Change your preferences in the watch face settings in Connect IQ. Enable Use custom colors to apply your own red, green and blue values, from 0 to 255.
+
+The sleep layout uses the sleep and wake times in your Garmin profile and requires User Profile access. It is separate from the watch's always-on display setting.
+
+Mini Glyphs is designed for AMOLED screens and displays time in English only. See Compatible Devices for supported watches.

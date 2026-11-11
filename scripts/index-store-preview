@@ -1,0 +1,42 @@
+#!/usr/bin/env python3
+"""Run an isolated native screenshot fixture. Never use its PRG for distribution."""
+import argparse
+from pathlib import Path
+import runpy
+import shutil
+import subprocess
+
+root = Path(__file__).resolve().parent.parent
+ciq = runpy.run_path(str(root / 'scripts/ciq'))
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument('device', choices=['venu3', 'venusq2'])
+parser.add_argument('variant', choices=['orange-none', 'sage-four', 'blue-twelve', 'lilac-none-date'])
+args = parser.parse_args()
+colors = {'orange-none': ('0xFF9900', 0), 'sage-four': ('0x99CCBB', 4), 'blue-twelve': ('0x99CCFF', 12)}
+colors['lilac-none-date'] = ('0xCC99FF', 0)
+color, markers = colors[args.variant]
+show_date = 'true' if args.variant == 'lilac-none-date' else 'false'
+folder = root / 'build/store-preview' / args.device / args.variant
+folder.mkdir(parents=True, exist_ok=True)
+for name in ['source', 'resources']:
+    shutil.copytree(root / 'mini-index' / name, folder / name, dirs_exist_ok=True)
+for name in ['manifest.xml', 'monkey.jungle']:
+    shutil.copyfile(root / 'mini-index' / name, folder / name)
+manifest = folder / 'manifest.xml'
+manifest.write_text(manifest.read_text().replace('c37a6961-12c6-40e4-ab05-65905d3dec9a', '0e551e83-7559-4dd0-939f-0bbe91feee71'))
+view = folder / 'source/MiniIndexView.mc'
+source = view.read_text()
+# Freeze only inputs. Geometry, drawing code, colors and native rasterization
+# remain the production implementation. Existing user settings are untouched.
+anchor = '        if (markers != 4 && markers != 12) { markers = 0; }'
+assert source.count(anchor) == 1
+source = source.replace(anchor, anchor + f'\n        accent = {color}; markers = {markers}; showDate = {show_date};')
+source = source.replace('now.hour', '10').replace('now.min', '8')
+if args.variant == 'lilac-none-date':
+    source = source.replace('date.day.format("%02d")', '"24"')
+view.write_text(source)
+output = folder / 'index-store-preview.prg'
+subprocess.run([ciq['tool']('monkeyc'), '-f', 'monkey.jungle', '-d', args.device,
+                '-o', str(output), '-y', str(ciq['signing_key']())], cwd=folder, check=True)
+print(f'SCREENSHOT FIXTURE ONLY: {output}', flush=True)
+subprocess.run([ciq['tool']('monkeydo'), str(output), args.device], check=True)

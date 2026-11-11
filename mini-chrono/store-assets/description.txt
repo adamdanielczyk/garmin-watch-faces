@@ -1,0 +1,18 @@
+Mini Chrono is a minimalist digital watch face with large hour and minute digits on a black background.
+
+Choose a side-by-side or stacked layout, select a font, and set separate colors for the hours and minutes. Keep the display focused on time or add a small battery indicator.
+
+Features
+• Horizontal or vertical time layout.
+• Five fonts: Courier Prime, Inter, Monofett, Tilt Neon and Tourney.
+• Five font-size settings, with automatic reduction when needed to fit the display.
+• Seven color presets: blue, green, gray, orange, pink, red and yellow.
+• Custom RGB controls for the hour and minute colors.
+• Optional battery indicator, hidden by default.
+• Option to hide the hour's leading zero.
+• Follows your watch's 12-hour or 24-hour time setting.
+• No network or sensor permissions required.
+
+The default look uses the Tilt Neon font, a horizontal layout, orange hours and warm white minutes. Change your preferences in the watch face settings in Connect IQ. Enable Use custom colors to apply your own red, green and blue values, from 0 to 255.
+
+See Compatible Devices for supported watches. Available colors and the displayed text size depend on your watch's screen.
