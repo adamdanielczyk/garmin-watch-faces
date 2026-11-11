@@ -1,4 +1,5 @@
 <settings>
+    <setting propertyKey="@Properties.BackgroundBrightness" title="@Strings.BackgroundBrightnessTitle"><settingConfig type="numeric" min="0" max="100" required="true"/></setting>
 
     <setting propertyKey="@Properties.EnableSleepModeLayout" title="@Strings.EnableSleepModeLayoutTitle">
         <settingConfig type="boolean" />

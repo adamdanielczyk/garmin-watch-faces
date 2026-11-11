@@ -5,6 +5,7 @@ class Settings {
 
     function initialize() {
         settings = {
+            "BackgroundBrightness" => Properties.getValue("BackgroundBrightness"),
             "EnableSleepModeLayout" => Properties.getValue("EnableSleepModeLayout"),
             "UseCustomColors" => Properties.getValue("UseCustomColors"),
             "PresetColor" => Properties.getValue("PresetColor"),

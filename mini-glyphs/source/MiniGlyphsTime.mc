@@ -4,6 +4,7 @@ import Toybox.WatchUi;
 
 class MiniGlyphsTime extends WatchUi.Drawable {
     private var rowsGenerator;
+    private var lowPower = false;
     private var configurationProvider;
 
     private var marginLeft = 0;
@@ -22,7 +23,32 @@ class MiniGlyphsTime extends WatchUi.Drawable {
         configurationProvider = new ConfigurationProvider();
     }
 
+    function setLowPower(value) { lowPower = value; }
+
+    function drawAmbient(dc) {
+        var time = configurationProvider.getCurrentTime();
+        var minute = time[:minutes];
+        var lines = [];
+        if (minute != 0) {
+            lines.add(ambientMinutes[minute]);
+            lines.add(minute <= 30 ? "PAST" : "TO");
+        }
+        lines.add(ambientHours[time[:hour] - 1]);
+        var font = Graphics.FONT_XTINY;
+        var lineHeight = dc.getFontHeight(font);
+        var center = GlyphsDisplay.ambientCenterY(dc.getHeight(), System.getClockTime().min);
+        var top = (center - lines.size() * lineHeight / 2).toNumber();
+        dc.setColor(0x808080, Graphics.COLOR_TRANSPARENT);
+        for (var i = 0; i < lines.size(); i++) {
+            dc.drawText(dc.getWidth()/2, top + i * lineHeight, font, lines[i], Graphics.TEXT_JUSTIFY_CENTER);
+        }
+    }
+
+    private const ambientMinutes = {5=>"FIVE", 10=>"TEN", 15=>"QUARTER", 20=>"TWENTY", 25=>"TWENTY FIVE", 30=>"HALF", 35=>"TWENTY FIVE", 40=>"TWENTY", 45=>"QUARTER", 50=>"TEN", 55=>"FIVE"};
+    private const ambientHours = ["ONE", "TWO", "THREE", "FOUR", "FIVE", "SIX", "SEVEN", "EIGHT", "NINE", "TEN", "ELEVEN", "TWELVE"];
+
     function draw(dc) {
+        if (lowPower) { drawAmbient(dc); return; }
         var rowsData = loadRowsData(dc);
 
         var currentTime = configurationProvider.getCurrentTime();
@@ -55,7 +81,8 @@ class MiniGlyphsTime extends WatchUi.Drawable {
 
     function drawHighlightedTextBackground(dc, fontHeight, rows, startIndex, endIndex, textMapping, value) {
         var textToHighlight = textMapping[value];
-        var rowIndex = 0;
+        if (textToHighlight.length() == 0) { return; }
+        var rowIndex = -1;
         var letterIndex = 0;
 
         for (var i = startIndex; i <= endIndex && i < rows.size(); i++) {
@@ -69,6 +96,7 @@ class MiniGlyphsTime extends WatchUi.Drawable {
             }
         }
 
+        if (rowIndex < 0) { return; }
         var letterWidth = dc.getTextWidthInPixels("A", configurationProvider.font);
 
         var x = marginLeft + letterWidth * letterIndex;

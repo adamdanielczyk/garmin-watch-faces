@@ -17,60 +17,17 @@ class ConfigurationProvider {
 
     function getCurrentTime() {
         var clockTime = System.getClockTime();
-        var hour = clockTime.hour;
-        var minutes = clockTime.min;
-
-        if (minutes >= 33) {
-            hour = hour + 1;
-        }
-
-        hour = hour % 12;
-        if (hour == 0) {
-            hour = 12;
-        }
-
-        var minutesRemainder = minutes % 5;
-        if (minutesRemainder < 3) {
-            minutes = minutes - minutesRemainder;
-        } else {
-            minutes = minutes + 5 - minutesRemainder;
-        }
-
-        minutes = minutes % 60;
-
-        return {
-            :hour => hour,
-            :minutes => minutes,
-        };
+        return GlyphsDisplay.roundedTime(clockTime.hour, clockTime.min);
     }
 
     function shouldUseSleepModeLayout() {
-        var sleepModeLayoutEnabled = settings.get("EnableSleepModeLayout");
-        if (!sleepModeLayoutEnabled) {
-            return false;
-        }
-
+        if (!settings.get("EnableSleepModeLayout")) { return false; }
         var profile = UserProfile.getProfile();
-        var profileSleepTime = profile.sleepTime;
-        var profileWakeTime = profile.wakeTime;
-
-        if (profileSleepTime == null || profileWakeTime == null) {
-            return false;
-        }
-
-        var now = Time.now();
-        var today = Time.today();
-
-        var sleepTime = today.add(profileSleepTime);
-        var wakeTime = today.add(profileWakeTime);
-
-        if (sleepTime.greaterThan(wakeTime)) {
-            return now.greaterThan(sleepTime) || now.lessThan(wakeTime);
-        } else if (wakeTime.greaterThan(sleepTime)) {
-            return now.greaterThan(sleepTime) && now.lessThan(wakeTime);
-        } else {
-            return false;
-        }
+        var sleep = profile.sleepTime;
+        var wake = profile.wakeTime;
+        var clock = System.getClockTime();
+        var nowSeconds = clock.hour * 3600 + clock.min * 60 + clock.sec;
+        return GlyphsDisplay.isScheduledSleep(nowSeconds, sleep == null ? null : sleep.value(), wake == null ? null : wake.value());
     }
 
     private function loadFont() {
@@ -122,7 +79,10 @@ class ConfigurationProvider {
         }
 
         highlightColor = highlightRgb.getHex();
-        regularColor = regularRgb.getHex();
+        // Control only background letters; persisted custom colors remain intact.
+        var brightness = settings.get("BackgroundBrightness");
+        if (brightness == null) { brightness = 60; }
+        regularColor = regularRgb.getDimmedHex(brightness);
     }
 
     enum {
@@ -144,6 +104,11 @@ class ConfigurationProvider {
             me.r = r;
             me.g = g;
             me.b = b;
+        }
+
+        function getDimmedHex(percent) {
+            percent = percent < 0 ? 0 : (percent > 100 ? 100 : percent);
+            return (((r * percent / 100).toNumber() & 0xff) << 16) | (((g * percent / 100).toNumber() & 0xff) << 8) | ((b * percent / 100).toNumber() & 0xff);
         }
 
         function getHex() {

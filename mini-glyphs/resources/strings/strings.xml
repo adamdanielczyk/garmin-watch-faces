@@ -1,4 +1,5 @@
 <strings>
+    <string id="BackgroundBrightnessTitle">Background letters brightness (0–100%)</string>
 
     <string id="AppName">Mini Glyphs</string>
 

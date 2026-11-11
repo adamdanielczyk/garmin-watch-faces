@@ -35,10 +35,14 @@ class MiniGlyphsView extends WatchUi.WatchFace {
 
     // The user has just looked at their watch. Timers and animations may be started here.
     function onExitSleep() as Void {
+        (View.findDrawableById("MiniGlyphsTime") as MiniGlyphsTime).setLowPower(false);
+        WatchUi.requestUpdate();
     }
 
     // Terminate any active timers and prepare for slow updates.
     function onEnterSleep() as Void {
+        (View.findDrawableById("MiniGlyphsTime") as MiniGlyphsTime).setLowPower(true);
+        WatchUi.requestUpdate();
     }
 
     function onSettingsChanged() {
