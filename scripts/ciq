@@ -4,14 +4,16 @@
 import argparse
 import json
 import os
+import re
 from pathlib import Path
 import shutil
 import subprocess
 import sys
+import tempfile
 import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parent.parent
-FACES = ("mini-chrono", "mini-lingua", "mini-glyphs")
+FACES = ("mini-chrono", "mini-lingua", "mini-glyphs", "mini-index")
 NS = {"iq": "http://www.garmin.com/xml/connectiq"}
 
 
@@ -75,11 +77,13 @@ def main():
     commands = parser.add_subparsers(dest="command", required=True)
     commands.add_parser("simulator", help="Start the Connect IQ simulator")
     commands.add_parser("doctor", help="Check Python, Java, SDK tools, and signing key")
-    for command in ("devices", "build", "run", "export"):
+    for command in ("devices", "build", "run", "test", "export"):
         sub = commands.add_parser(command)
         sub.add_argument("face", choices=FACES)
-        if command in ("build", "run"):
+        if command in ("build", "run", "test"):
             sub.add_argument("device", help="Product ID from the face's manifest")
+        if command == "run":
+            sub.add_argument("--settings-alias", help="Original executable stem if the simulator cached this app under an older name")
     args = parser.parse_args()
 
     if args.command == "doctor":
@@ -91,24 +95,83 @@ def main():
     if args.command == "devices":
         print("\n".join(devices(args.face)))
         return
-    if args.command in ("build", "run") and args.device not in devices(args.face):
+    if args.command in ("build", "run", "test") and args.device not in devices(args.face):
         raise ValueError(f"{args.device} is not supported by {args.face}. Use 'devices {args.face}' to list targets.")
 
     compiler = tool("monkeyc")
-    runner = tool("monkeydo") if args.command == "run" else None
+    runner = tool("monkeydo") if args.command in ("run", "test") else None
     key = signing_key()
 
     output_dir = ROOT / "build" / args.face
+    if args.command != "export":
+        output_dir = output_dir / args.device
+    if args.command == "test":
+        output_dir = output_dir / "tests"
     output_dir.mkdir(parents=True, exist_ok=True)
-    output = output_dir / (f"{args.face}.iq" if args.command == "export" else f"{args.device}.prg")
+    output = output_dir / (f"{args.face}.iq" if args.command == "export" else f"{Path(args.face).name}.prg")
     command = [compiler, "-f", "monkey.jungle", "-o", str(output), "-y", str(key)]
     if args.command == "export":
-        command.append("-e")
+        command.extend(["-e", "-r"])
     else:
         command.extend(["-d", args.device])
-    subprocess.run(command, cwd=ROOT / args.face, check=True)
+    if args.command == "test":
+        command.append("--unit-test")
+    if args.command == "test":
+        (output_dir / f"{args.device}-tests.log").write_text("Compilation started; tests have not run yet.\n")
+    if args.command == "export":
+        # SDK exports retain source-map XML even with -r. Compile copied sources
+        # from a neutral path so the package cannot disclose the user's checkout.
+        with tempfile.TemporaryDirectory(prefix="ciq-release-", dir="/tmp") as staging:
+            project = Path(staging) / args.face
+            shutil.copytree(ROOT / args.face, project,
+                            ignore=shutil.ignore_patterns("build", "bin", "store-assets", "__pycache__"))
+            staged_output = Path(staging) / output.name
+            release_command = command.copy()
+            release_command[release_command.index("-o") + 1] = str(staged_output)
+            subprocess.run(release_command, cwd=project, check=True)
+            subprocess.run([sys.executable, str(ROOT / "scripts/check-release-privacy"),
+                            str(staged_output)], check=True)
+            shutil.copy2(staged_output, output)
+    else:
+        subprocess.run(command, cwd=ROOT / args.face, check=True)
     if runner:
-        subprocess.run([runner, str(output), args.device], check=True)
+        run_command = [runner, str(output), args.device]
+        settings_file = output.with_name(output.stem + "-settings.json")
+        if settings_file.exists():
+            run_command.extend(["-a", f"{settings_file}:GARMIN/Settings/{output.stem.upper()}-settings.json"])
+        alias = getattr(args, "settings_alias", None)
+        if alias:
+            if not re.fullmatch(r"[A-Za-z0-9_-]+", alias):
+                raise ValueError("Settings alias must be an executable stem, without a path or extension.")
+            if not settings_file.exists():
+                raise ValueError("No generated settings schema for this app.")
+            # A second -a upload of the same source may leave the old alias
+            # schema cached in SDK 9.3. Refresh only this explicit legacy alias.
+            simulator_settings = Path(tempfile.gettempdir()) / "com.garmin.connectiq" / "GARMIN" / "Settings"
+            if not simulator_settings.is_dir():
+                raise ValueError("Start the simulator before using --settings-alias.")
+            shutil.copyfile(settings_file, simulator_settings / f"{alias.upper()}-settings.json")
+        if args.command == "test":
+            run_command.append("-t")
+            log_path = output_dir / f"{args.device}-tests.log"
+            log_path.write_text("Test run started; awaiting simulator results.\n")
+            try:
+                result = subprocess.run(run_command, capture_output=True, text=True, timeout=120)
+            except subprocess.TimeoutExpired as error:
+                captured = error.stdout or b""
+                if isinstance(captured, bytes):
+                    captured = captured.decode("utf-8", errors="replace")
+                log_path.write_text(captured + "\nERROR: Simulator test run timed out.\n")
+                raise ValueError(f"Simulator tests timed out; see {log_path}") from error
+            log = result.stdout + result.stderr
+            log_path.write_text(log)
+            print(log, end="")
+            # SDK 9.3 monkeydo returns 1 even after a successful test run.
+            # Require the explicit non-empty summary, not its process exit code.
+            if not re.search(r"PASSED \(passed=[1-9][0-9]*, failed=0, errors=0\)", log) or "FAILED" in log:
+                raise ValueError("Simulator did not report a passing test run; inspect the test log.")
+        else:
+            subprocess.run(run_command, check=True)
     print(f"Output: {output}")
 
 
