@@ -1,16 +1,17 @@
 # Garmin Watch Faces
 
-Source code for Mini Chrono, Mini Lingua, and Mini Glyphs, published on the Garmin Connect IQ Store.
+Source code for the published Mini Chrono, Mini Lingua and Mini Glyphs watch faces, plus Mini Index, submitted for Connect IQ Store review.
 
 | Watch face | Source | Download |
 | --- | --- | --- |
 | Mini Chrono | [mini-chrono](mini-chrono/) | [Connect IQ Store](https://apps.garmin.com/en-US/apps/a76c8507-2093-4d44-b8fa-e8f30d6f8927) |
 | Mini Lingua | [mini-lingua](mini-lingua/) | [Connect IQ Store](https://apps.garmin.com/en-US/apps/6ba344de-c869-4ebe-9504-e8c7d2cc3320) |
+| Mini Index | [mini-index](mini-index/) | [Connect IQ Store](https://apps.garmin.com/apps/71d8d765-534d-406b-97d9-532d3d5319c7) |
 | Mini Glyphs | [mini-glyphs](mini-glyphs/) | [Connect IQ Store](https://apps.garmin.com/en-US/apps/0f1c6fae-9d28-4be9-909c-eaa7168f8276) |
 
 Each folder is an independent Monkey C project with its own `manifest.xml`, `monkey.jungle`, `source/`, and `resources/`. Supported watches are listed in that project's manifest.
 
-Each project's README documents its display constraints, existing device omissions, and compatibility checks: [Chrono](mini-chrono/README.md), [Lingua](mini-lingua/README.md), and [Glyphs](mini-glyphs/README.md).
+Each project's README documents its display constraints, existing device omissions, and compatibility checks: [Chrono](mini-chrono/README.md), [Lingua](mini-lingua/README.md), [Glyphs](mini-glyphs/README.md), and [Index](mini-index/README.md).
 
 ## Development setup
 
@@ -42,7 +43,7 @@ See Garmin's [command-line setup guide](https://developer.garmin.com/connect-iq/
 
 ## Build and run
 
-Run these commands from the repository root. The examples use `venu3`, which is supported by all three projects; its device definition must be installed in the SDK Manager.
+Run these commands from the repository root. The examples use `venu3`, which is supported by all four projects; its device definition must be installed in the SDK Manager.
 
 ```sh
 # List a project's supported product IDs; no SDK or signing key needed.
@@ -54,7 +55,7 @@ Run these commands from the repository root. The examples use `venu3`, which is 
 ./scripts/ciq build mini-glyphs venu3
 ```
 
-Builds are written to `build/<face>/<device>.prg`. To preview a watch face, start the simulator in one terminal, then build and load it from another:
+Builds are written to `build/<face>/<device>/<face>.prg`. To preview a watch face, start the simulator in one terminal, then build and load it from another:
 
 ```sh
 ./scripts/ciq simulator
@@ -72,10 +73,27 @@ The `run` command rebuilds before loading the app and stays attached to the simu
 ./scripts/ciq export mini-chrono
 ```
 
-This invokes Garmin's compiler in export mode for the project's manifest targets and writes `build/mini-chrono/mini-chrono.iq`. Install the required device definitions first. Export creates a local package; upload it separately to the existing Store listing after review.
+This invokes Garmin's compiler in export mode for the project's manifest targets and writes `build/mini-chrono/mini-chrono.iq`. Install the required device definitions first. Export creates a local package from a neutral temporary checkout, with release compilation and a decompressed-package privacy check (`bsdtar` required). Upload it separately to the existing Store listing after review.
 
 The manifests exclude the former `system8preview` beta target and the unavailable `vivolife` definition. Per-face READMEs document compatibility exclusions.
 
 ## Working with agents
 
-[AGENTS.md](AGENTS.md) describes project boundaries and validation expectations. There is no automated Monkey C test suite in the imported projects. Compilation checks and simulator checks should be reported separately.
+[AGENTS.md](AGENTS.md) describes project boundaries and validation expectations. Glyphs and Index have native regression tests: `./scripts/ciq test <face> <device>`. See [verification workflow](docs/verification.md) for test logs, settings-schema transfer, screenshots and 24-hour burn-in checks. Compilation, simulator checks and hardware validation should be reported separately.
+
+## Store assets and release handoff
+
+[Store workflow](docs/store-listings.md) covers reference framing, native captures,
+listing copy, asset validation and release handoff. [Verification](docs/verification.md)
+covers simulator settings, capture failures and evidence limits.
+
+```sh
+# Run the SDK-free local check before handing over Store assets.
+python3 scripts/check-store-assets
+# Recompose images from saved native captures.
+python3 scripts/prepare-index-store-assets
+```
+
+The local asset check needs Python only. Native builds, device metadata checks and
+simulator tests still require a local Garmin SDK and signing key; the asset check
+does not replace them.
