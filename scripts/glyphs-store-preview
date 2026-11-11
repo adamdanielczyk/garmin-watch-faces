@@ -1,0 +1,42 @@
+#!/usr/bin/env python3
+"""Run an isolated native Glyphs screenshot fixture, never for distribution."""
+import argparse
+from pathlib import Path
+import runpy
+import shutil
+import subprocess
+
+root = Path(__file__).resolve().parents[1]
+ciq = runpy.run_path(str(root / 'scripts/ciq'))
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument('device', choices=['venu3', 'venusq2'])
+parser.add_argument('variant', choices=['orange', 'blue', 'green', 'pink-hidden'])
+args = parser.parse_args()
+folder = root / 'build/glyphs-store-preview' / args.device / args.variant
+folder.mkdir(parents=True, exist_ok=True)
+for name in ['source', 'resources']:
+    shutil.copytree(root / 'mini-glyphs' / name, folder / name, dirs_exist_ok=True)
+for name in ['manifest.xml', 'monkey.jungle']:
+    shutil.copyfile(root / 'mini-glyphs' / name, folder / name)
+manifest = folder / 'manifest.xml'
+manifest.write_text(manifest.read_text().replace('5dc5fbe5-be69-4c05-958d-433e4ee8c02b', 'c68e2782-5017-4f73-a5cb-738370fdd478'))
+# Freeze inputs only; retain production fonts, geometry, colors and drawing.
+path = folder / 'source/ConfigurationProvider.mc'
+source = path.read_text().replace('clockTime.hour, clockTime.min', '12, 30')
+source = source.replace('settings = new Settings();', '''
+        Application.Properties.setValue("PresetColor", %d);
+        Application.Properties.setValue("BackgroundBrightness", %d);
+        Application.Properties.setValue("UseCustomColors", false);
+        Application.Properties.setValue("EnableSleepModeLayout", false);
+        settings = new Settings();''' % (
+            {'orange': 3, 'blue': 0, 'green': 1, 'pink-hidden': 4}[args.variant],
+            0 if args.variant == 'pink-hidden' else 60))
+path.write_text('import Toybox.Application;\n' + source)
+path = folder / 'source/RowsGenerator.mc'
+source = path.read_text().replace('me.targetRowCount = targetRowCount;', 'Math.srand(7);\n        me.targetRowCount = targetRowCount;')
+path.write_text(source)
+output = folder / 'glyphs-store-preview.prg'
+subprocess.run([ciq['tool']('monkeyc'), '-f', 'monkey.jungle', '-d', args.device,
+                '-o', str(output), '-y', str(ciq['signing_key']())], cwd=folder, check=True)
+print(f'SCREENSHOT FIXTURE ONLY: {output}', flush=True)
+subprocess.run([ciq['tool']('monkeydo'), str(output), args.device], check=True)

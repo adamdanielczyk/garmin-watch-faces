@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate listing copy, native capture dimensions, and Index upload assets."""
+"""Validate listing copy, native capture dimensions, and curated upload assets."""
 import argparse
 from pathlib import Path
 import struct
@@ -43,26 +43,30 @@ def validate(root):
                 check(kind not in (b'tEXt', b'zTXt', b'iTXt', b'eXIf'),
                       f'{path.name}: remove embedded text/EXIF metadata')
                 offset += length + 12
-    assets = root / 'mini-index/store-assets'
-    dimensions = {'cover.png': (500, 500)}
-    for variant in ('orange-none', 'sage-four', 'blue-twelve', 'lilac-none-date'):
-        dimensions[f'screen-{variant}.png'] = (500, 524)
-        dimensions[f'raw/venu3-{variant}.png'] = (454, 454)
-    dimensions['raw/venusq2-orange-none.png'] = (320, 360)
-    for name, expected in dimensions.items():
-        path = assets / name
-        try:
-            data = path.read_bytes()
-            valid = len(data) >= 24 and data[:8] == b'\x89PNG\r\n\x1a\n' and data[12:16] == b'IHDR'
-            check(valid, f'{name}: invalid PNG header')
-            if valid:
-                check(struct.unpack('>II', data[16:24]) == expected,
-                      f'{name}: expected dimensions {expected}')
-            if not name.startswith('raw/'):
-                limit = 300000 if name == 'cover.png' else 150000
-                check(len(data) < limit, f'{name}: must be below {limit} bytes')
-        except OSError as error:
-            errors.append(f'{name}: {error}')
+    for face, variants, cover_variant in (
+        ('mini-index', ('orange-none', 'sage-four', 'blue-twelve', 'lilac-none-date'), 'orange-none'),
+        ('mini-glyphs', ('orange', 'blue', 'green', 'pink-hidden'), 'orange'),
+    ):
+        assets = root / face / 'store-assets'
+        dimensions = {'cover.png': (500, 500)}
+        for variant in variants:
+            dimensions[f'screen-{variant}.png'] = (500, 524)
+            dimensions[f'raw/venu3-{variant}.png'] = (454, 454)
+        dimensions[f'raw/venusq2-{cover_variant}.png'] = (320, 360)
+        for name, expected in dimensions.items():
+            path = assets / name
+            try:
+                data = path.read_bytes()
+                valid = len(data) >= 24 and data[:8] == b'\x89PNG\r\n\x1a\n' and data[12:16] == b'IHDR'
+                check(valid, f'{name}: invalid PNG header')
+                if valid:
+                    check(struct.unpack('>II', data[16:24]) == expected,
+                          f'{name}: expected dimensions {expected}')
+                if not name.startswith('raw/'):
+                    limit = 300000 if name == 'cover.png' else 150000
+                    check(len(data) < limit, f'{name}: must be below {limit} bytes')
+            except OSError as error:
+                errors.append(f'{name}: {error}')
     return errors
 
 
