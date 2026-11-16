@@ -13,6 +13,18 @@ Each folder is an independent Monkey C project with its own `manifest.xml`, `mon
 
 Each project's README documents its display constraints, existing device omissions, and compatibility checks: [Chrono](mini-chrono/README.md), [Lingua](mini-lingua/README.md), [Glyphs](mini-glyphs/README.md), and [Index](mini-index/README.md).
 
+## Device support policy
+
+Support devices where the face keeps its intended appearance using the existing layout and ordinary scaling. Visual quality and low maintenance take priority over the number of supported watches. API eligibility and successful compilation alone do not establish support.
+
+- Treat physical display cutouts, obstructing analog hands, unusual geometry and screens that require cramped or substantially reduced content as reasons to exclude a device. A design limitation is sufficient; a crash or clipping defect is not required.
+- Keep smaller conventional displays when the existing layout remains attractive and readable. Size, model age and assumed popularity alone do not determine support.
+- Prefer a small shared fix when it improves the existing layout across a display class. Device-specific layouts, legacy API paths and hardware workarounds are outside routine maintenance; pursue them only when explicitly requested.
+- Keep new or unreviewed devices unsupported until their hardware fits the policy and representative native checks establish layout, settings and low-power behavior. Reuse evidence for equivalent displays; inspect new geometry or hardware explicitly. An SDK update is a review trigger, not an instruction to expand the manifest.
+- For a fit report, reproduce it where practical, then choose a shared fix or exclusion. Record the reason in the affected face's README and update its manifest and display profiles together. Index exclusions also belong in `device-exclusions.json` so its audit recognizes the decision.
+
+Existing per-face compatibility decisions remain in their READMEs. Apply this policy when adding or reviewing support; it does not by itself remove existing targets from other faces. Preserve Glyphs' intentional AMOLED-only design.
+
 ## Development setup
 
 The workflow uses the command line and works without an IDE.

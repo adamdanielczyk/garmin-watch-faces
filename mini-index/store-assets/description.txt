@@ -13,6 +13,6 @@ Features
 The default look pairs a white hour hand with an orange minute hand, with markers and date turned off. Change your preferences in the watch face settings in Connect IQ.
 
 Display behavior
-On AMOLED and LCD watches, the low-power view uses a smaller gray dial that alternates position each minute. It hides the date and shows no markers or four markers, depending on your selection. MIP watches retain the full dial. Monochrome watches use white hands, and models with a separate sub-display use a layout that keeps the hands clear of it.
+On AMOLED and LCD watches, the low-power view uses a smaller gray dial that alternates position each minute. It hides the date and shows no markers or four markers, depending on your selection. MIP watches retain the full dial.
 
 See Compatible Devices for supported watches. Colors may look different depending on your watch's display.

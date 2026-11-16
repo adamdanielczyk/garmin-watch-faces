@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Check Mini Index coverage and display profiles against installed Garmin metadata."""
+"""Check Mini Index support decisions and display profiles against Garmin metadata."""
 import argparse
 import json
 from pathlib import Path
@@ -15,6 +15,9 @@ app = manifest.find('.//{*}application')
 minimum = tuple(map(int, app.attrib['minApiLevel'].split('.')))
 declared = {p.attrib['id'] for p in manifest.findall('.//{*}product')}
 profiles = dict(re.findall(r'^([\w]+)\.excludeAnnotations\s*=\s*(.+)$', (root / 'mini-index/monkey.jungle').read_text(), re.M))
+exclusions = json.loads((root / 'mini-index/device-exclusions.json').read_text())
+if any(not isinstance(reason, str) or not reason.strip() for reason in exclusions.values()):
+    raise SystemExit('Every device exclusion needs a concrete design or technical reason.')
 eligible = set()
 excluded = []
 errors = []
@@ -29,6 +32,12 @@ for path in sorted(args.devices.glob('*/compiler.json')):
         continue
     eligible.add(product)
     simulator = json.loads((path.parent / 'simulator.json').read_text())
+    physical_cutout = 'subscreen' in simulator and device['bitsPerPixel'] == 1
+    if product in declared:
+        if physical_cutout or 'analogHands' in simulator:
+            errors.append(f'{product}: physical cutout or analog hands conflict with Index support policy; exclude this target')
+        if simulator['display']['shape'] not in ('round', 'semi-round', 'rectangle'):
+            errors.append(f'{product}: unreviewed display geometry; keep unsupported pending a design review')
     display = device['displayType']
     if display not in ('mip', 'amoled', 'lcd'):
         errors.append(f'{product}: unreviewed display type {display}')
@@ -36,20 +45,26 @@ for path in sorted(args.devices.glob('*/compiler.json')):
     expected = {
         'amoled' if display == 'mip' else 'mip',
         'color' if device['bitsPerPixel'] == 1 else 'mono',
-        'fullScreen' if 'subscreen' in simulator else 'cutout',
+        # AMOLED subscreens are virtual and do not obstruct the dial.
+        'fullScreen' if physical_cutout else 'cutout',
     }
     actual = set(profiles.get(product, '').split(';'))
     if product in declared and actual != expected:
         errors.append(f'{product}: expected excluded annotations {sorted(expected)}, got {sorted(actual)}')
 if not eligible:
     errors.append(f'No compatible watch metadata found under {args.devices}')
-for product in sorted(eligible - declared):
-    errors.append(f'{product}: compatible watch missing from manifest; add and validate it')
+for product in sorted(set(exclusions) - eligible):
+    errors.append(f'{product}: exclusion missing or below minimum API in installed metadata')
+for product in sorted(set(exclusions) & declared):
+    errors.append(f'{product}: intentionally excluded watch still declared')
+for product in sorted(eligible - declared - set(exclusions)):
+    errors.append(f'{product}: unreviewed watch; document an exclusion or validate the existing layout before adding support')
 for product in sorted(declared - eligible):
     errors.append(f'{product}: declared watch missing or below minimum API in installed metadata')
 for product in sorted(set(profiles) - declared):
     errors.append(f'{product}: stale display profile outside manifest')
 if errors:
     raise SystemExit('\n'.join(errors))
-print(f'PASS: all {len(declared)} compatible installed watch product IDs have correct display profiles.')
+print(f'PASS: {len(declared)} supported watch product IDs have correct display profiles; {len(exclusions)} documented design exclusions.')
+print('Design exclusions: ' + ', '.join(sorted(exclusions)))
 print(f'Excluded below API {app.attrib["minApiLevel"]}: {", ".join(excluded)}')

@@ -84,3 +84,16 @@ function cutoutDialAvoidsSubscreenAndBezel(logger) {
     }
     return true;
 }
+
+// Instinct AMOLED subscreens are virtual; the normal round dial stays centered.
+(:test)
+function roundAmoledUsesFullDial(logger) {
+    if (IndexGeometry.isAmoled()) {
+        Test.assert(!IndexGeometry.hasCutout());
+        var dial=IndexGeometry.dial(416,416,false,0);
+        Test.assertEqual(dial[:x],208);
+        Test.assertEqual(dial[:y],208);
+        Test.assert(dial[:radius] > 160);
+    }
+    return true;
+}

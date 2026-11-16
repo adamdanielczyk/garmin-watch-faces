@@ -51,4 +51,11 @@ phrases, 12/24-hour settings and awake/sleep transitions. Native layout, AOD
 compliance and hardware battery use remain unverified for these prototypes.
 Preserve language coverage when adapting a published word face.
 
-[Research and official sources](../../docs/research/minimalist-options-2026-11-10.md)
+## Garmin references
+
+- [Watch Faces](https://developer.garmin.com/connect-iq/articles/user-experience-guidelines/Watch_Faces.html)
+  and [Entry Points](https://developer.garmin.com/connect-iq/articles/user-experience-guidelines/Entry_Points.html):
+  display behavior and always-on design.
+- [Low- and High-Power Modes](https://forums.garmin.com/developer/connect-iq/b/news-announcements/posts/changes-to-watch-face-low--and-high-power-modes)
+  and [App Types](https://developer.garmin.com/connect-iq/articles/connect-iq-basics/App_Types.html):
+  update cadence and rendering constraints.

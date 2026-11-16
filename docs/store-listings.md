@@ -1,9 +1,9 @@
-# Connect IQ Store copy
+# Connect IQ Store workflow
 
 Canonical listing text and the workflow for preparing Store assets.
 Descriptions must fit Garmin’s 4,000-character limit.
 
-| Face | Replacement description |
+| Face | Listing description |
 | --- | --- |
 | Mini Chrono | [description.txt](../mini-chrono/store-assets/description.txt) |
 | Mini Lingua | [description.txt](../mini-lingua/store-assets/description.txt) |
@@ -43,40 +43,29 @@ or placeholders. Chrono and Lingua currently preserve listing text only; Glyphs 
 curated images and native captures. The local check validates all four text sets
 and both curated image sets; extend it when adding images for another face.
 
-## Store links
+## Per-face images
 
-- [Mini Chrono](https://apps.garmin.com/apps/a76c8507-2093-4d44-b8fa-e8f30d6f8927)
-- [Mini Lingua](https://apps.garmin.com/apps/6ba344de-c869-4ebe-9504-e8c7d2cc3320)
-- [Mini Glyphs](https://apps.garmin.com/apps/0f1c6fae-9d28-4be9-909c-eaa7168f8276)
-- [Mini Index](https://apps.garmin.com/apps/71d8d765-534d-406b-97d9-532d3d5319c7)
-
-Mini Index images are in [store-assets](../mini-index/store-assets/README.md).
-Mini Glyphs uses the same framing; its [asset README](../mini-glyphs/store-assets/README.md)
-records the native 12:30 captures, color variants and reproduction commands.
-Their framing follows Mini Lingua's 500 × 500 cover and 500 × 524 previews,
-with an enlarged case and short cropped strap sections. The native captures
-use 12:30 for Glyphs and 10:08 for Index; reframing does not change application binaries.
+[Index's asset README](../mini-index/store-assets/README.md) and
+[Glyphs' asset README](../mini-glyphs/store-assets/README.md) record native captures,
+variants and reproduction commands. Store links are in the repository README.
 
 ## Screenshot conventions
 
 - Use 12:30 for covers and previews. Mini Index uses 10:08 so its hands remain distinct.
 - Use the orange preset for every face's main cover image, keeping the collection consistent.
 - Preview screenshots may use other colors to demonstrate available options.
-- Match the established device framing: cream Venu Sq 2 cover and black Venu 3 previews.
+- Match the established framing: cream Venu Sq 2 cover at 500 × 500 and black Venu 3
+  previews at 500 × 524, with an enlarged case and short cropped strap sections.
 
 ## Prepare or revise images
 
 1. Download the actual reference listing images. Compare their pixel dimensions,
    watch-case scale, strap crop and margins at the same displayed size. A screenshot
    of the listing explains the intent but is not the source image. Mini Lingua is
-   the framing reference: cream Venu Sq 2 cover, black Venu 3 previews. The recipe
-   is encoded in `scripts/prepare-index-store-assets`; reuse it instead of choosing
-   a new crop. Show the watch case prominently with short sections of strap.
-2. Use **12:30** for Store covers and screenshots by default, including Chrono,
-   Lingua and Glyphs. **Index is the exception: use 10:08**, because its nearly
-   opposed hands at 12:30 make a narrow, almost vertical composition. Keep every
-   cover and color variant for a face at its designated time.
-   The first three screenshots use date off and orange/none, sage/four, blue/twelve
+   the framing reference. Reuse `scripts/prepare-index-store-assets` for the crop
+   and follow the screenshot conventions above.
+2. Keep every cover and color variant at its face's designated time.
+   For Index, the first three screenshots use date off and orange/none, sage/four, blue/twelve
    markers. The fourth uses custom lilac (#CC99FF), no markers and day 24.
    Distinguish markings on the physical bezel from configurable dial markers.
 3. Capture the native renderer with deterministic inputs. `scripts/index-store-preview`

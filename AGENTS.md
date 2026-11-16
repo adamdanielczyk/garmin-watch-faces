@@ -8,7 +8,7 @@ Preserve application IDs in `manifest.xml`, Store links, and persisted settings 
 
 Before changing device support, read the affected face's README for display constraints, existing omissions, and unresolved compatibility decisions. Update those notes when the compatibility policy changes.
 
-Support all compatible watch products by default. Representative test devices are not a release compatibility limit. Document concrete API, hardware or design reasons for exclusions; preserve Glyphs’ intentional AMOLED-only policy. For Mini Index, run `python3 scripts/check-index-devices` after SDK/device updates to catch coverage and display-profile drift.
+For device additions, SDK updates and fit reports, follow the design-first [device support policy](README.md#device-support-policy). Preserve each face's appearance and simple implementation; exclude challenging hardware that needs a special layout. New catalog entries require a support decision rather than automatic inclusion. Preserve Glyphs’ AMOLED-only policy. Run `python3 scripts/check-index-devices` for Index coverage and display-profile drift.
 
 ## Build and validate
 

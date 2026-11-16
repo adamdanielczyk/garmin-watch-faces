@@ -73,17 +73,19 @@ Exercise settings callbacks, awake/low-power transitions and representative scre
 sizes/display technologies after renderer changes. Inspect thin diagonals at native
 resolution; use `dc has :setAntiAlias` before APIs unavailable on older targets.
 
-Mini Index's intermittent missing static marker pixels after MIP Sleep Mode remain
-unresolved (see [known limitations](implementation/glyphs-and-index.md)). Complete
-frames were also observed. Neither successful compilation, geometry tests, a later
-complete frame nor screenshot reframing proves this defect fixed. Track it until a
-repeatable simulator/device check resolves the cause.
+Track Mini Index's unresolved MIP Sleep Mode marker omission in its
+[known limitation](../mini-index/README.md#known-limitation). A complete frame or
+screenshot reframing does not establish a fix.
+
+A complete manual Glyphs scheduled-sleep/settings matrix and first-generation
+Venu 24-hour heat-map run remain outstanding. Results on other targets do not
+replace these checks.
 
 ## Coverage policy
 
 Glyphs: large round AMOLED (Venu 3), small round AMOLED (Venu 2S), rectangular AMOLED (Venu Sq 2), and first-generation Venu for older protection rules. Keep the existing AMOLED-only manifest intact.
 
-Index: run `python3 scripts/check-index-devices` to audit all compatible installed watch products and their display profiles. Representative runtime targets: vivoactive_hr (small rectangle/API 2.4), fr735xt (clipped round/API 2.4), fenix5s/fr55 (small MIP), fenix7 (MIP), venusq (LCD), venusq2/venux1 (rectangular AMOLED), venu/venu3 (round AMOLED), instinct2s/instincte40mm (monochrome cutout), instinctcrossover (monochrome hybrid). Keep broad manifest support; the runtime sample is not the release target list.
+Index: run `python3 scripts/check-index-devices` to audit support decisions for API-eligible installed watches and their display profiles. Representative runtime targets: vivoactive_hr (small rectangle/API 2.4), fr735xt (clipped round/API 2.4), fenix5s/fr55 (small MIP), fenix7 (MIP), venusq (LCD), venusq2/venux1 (rectangular AMOLED), venu/venu3 (round AMOLED), instinct3amoled45mm/instinct3amoled50mm (round AMOLED with virtual subscreen). Apply the [device support policy](../README.md#device-support-policy); the runtime sample is not the release target list, and catalog eligibility does not require inclusion. Physical cutout and hybrid targets are excluded; see the Index README.
 
 `export` builds local packages for every manifest target; SDK device/API variants may make its reported build count exceed the number of manifest product IDs. Export does not upload anything.
 
