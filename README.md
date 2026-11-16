@@ -5,13 +5,27 @@ Source code for the published Mini Chrono, Mini Lingua and Mini Glyphs watch fac
 | Watch face | Source | Download |
 | --- | --- | --- |
 | Mini Chrono | [mini-chrono](mini-chrono/) | [Connect IQ Store](https://apps.garmin.com/en-US/apps/a76c8507-2093-4d44-b8fa-e8f30d6f8927) |
-| Mini Lingua | [mini-lingua](mini-lingua/) | [Connect IQ Store](https://apps.garmin.com/en-US/apps/6ba344de-c869-4ebe-9504-e8c7d2cc3320) |
-| Mini Index | [mini-index](mini-index/) | [Connect IQ Store](https://apps.garmin.com/apps/71d8d765-534d-406b-97d9-532d3d5319c7) |
 | Mini Glyphs | [mini-glyphs](mini-glyphs/) | [Connect IQ Store](https://apps.garmin.com/en-US/apps/0f1c6fae-9d28-4be9-909c-eaa7168f8276) |
+| Mini Index | [mini-index](mini-index/) | [Connect IQ Store](https://apps.garmin.com/apps/71d8d765-534d-406b-97d9-532d3d5319c7) |
+| Mini Lingua | [mini-lingua](mini-lingua/) | [Connect IQ Store](https://apps.garmin.com/en-US/apps/6ba344de-c869-4ebe-9504-e8c7d2cc3320) |
 
 Each folder is an independent Monkey C project with its own `manifest.xml`, `monkey.jungle`, `source/`, and `resources/`. Supported watches are listed in that project's manifest.
 
 Each project's README documents its display constraints, existing device omissions, and compatibility checks: [Chrono](mini-chrono/README.md), [Lingua](mini-lingua/README.md), [Glyphs](mini-glyphs/README.md), and [Index](mini-index/README.md).
+
+## Review requests
+
+On watches with Garmin's native review API, each face offers a rating after at
+least two weeks and 14 observed days of use. Later opportunities are spaced four,
+eight, then twelve weeks apart. Garmin decides whether each request is eligible;
+its SDK does not report whether a rating was submitted or dismissed.
+
+Requests are checked when the face appears or wakes, only between 09:00 and 20:00
+local time with a phone connected and Do Not Disturb off where available. A late
+response after the face hides or sleeps is ignored. Failed or denied requests
+retry no sooner than 24 hours later. The schedule is stored per face and survives
+updates; existing installations start counting after this update. Older watches
+without the review API keep their normal behavior. There is no custom review UI.
 
 ## Device support policy
 
@@ -91,7 +105,7 @@ The manifests exclude the former `system8preview` beta target and the unavailabl
 
 ## Working with agents
 
-[AGENTS.md](AGENTS.md) describes project boundaries and validation expectations. Glyphs and Index have native regression tests: `./scripts/ciq test <face> <device>`. See [verification workflow](docs/verification.md) for test logs, settings-schema transfer, screenshots and 24-hour burn-in checks. Compilation, simulator checks and hardware validation should be reported separately.
+[AGENTS.md](AGENTS.md) describes project boundaries and validation expectations. All four faces have native review-scheduling tests; Glyphs and Index also have rendering regression tests: `./scripts/ciq test <face> <device>`. See [verification workflow](docs/verification.md) for test logs, settings-schema transfer, screenshots and 24-hour burn-in checks. Compilation, simulator checks and hardware validation should be reported separately.
 
 ## Store assets and release handoff
 

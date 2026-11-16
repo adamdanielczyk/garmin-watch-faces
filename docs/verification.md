@@ -7,11 +7,27 @@ Use the installed Garmin SDK and simulator. Browser previews cannot validate nat
 ```sh
 ./scripts/ciq doctor
 ./scripts/ciq simulator
+./scripts/ciq test mini-chrono venu3
+./scripts/ciq test mini-lingua venu3
 ./scripts/ciq test mini-glyphs venu3
 ./scripts/ciq test mini-index venu3
 ./scripts/ciq test mini-index fenix7
 ./scripts/ciq run mini-index venu3
 ```
+
+Review-scheduling tests in every face cover the initial two-week/14-day usage
+threshold, repeated wakes, persisted retry throttling, four/eight/twelve-week
+spacing and clock rollback. The identical `ReviewPrompt.mc` files belong to
+independent exportable apps; keep their behavior and tests aligned.
+
+These tests do not submit Store reviews. Garmin's simulator **Settings → Review
+Requests → Grant / Deny / Fail** controls token responses. To inspect the native
+flow without waiting weeks, use an isolated copy under ignored `build/` with a
+separate application ID and seed `reviewScheduleV1` with `days = 14`, `nextAt = 0`,
+`attemptAt = 0`, `shown = 0`, and the current UTC day as `lastDay`. Keep production
+source and Store exports on their normal schedule. Test at daytime with the
+simulated phone connected and Do Not Disturb off. A granted callback should open
+Garmin's review UI; denied/failed responses should leave the dial visible.
 
 `test` adds Garmin's `--unit-test`, runs `monkeydo -t`, saves stdout/stderr to `build/<face>/<device>/tests/<device>-tests.log`, and requires an explicit non-empty passing summary. SDK 9.3's test runner can return process status 1 despite all tests passing; the helper checks the test summary instead. A timeout replaces the log with a failure marker. Run simulator tests sequentially, since they share one simulator.
 

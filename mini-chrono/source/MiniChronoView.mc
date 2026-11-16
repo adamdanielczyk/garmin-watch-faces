@@ -5,6 +5,7 @@ import Toybox.System;
 import Toybox.WatchUi;
 
 class MiniChronoView extends WatchUi.WatchFace {
+    private var reviewPrompt = new ReviewPrompt();
 
     function initialize() {
         WatchFace.initialize();
@@ -19,6 +20,7 @@ class MiniChronoView extends WatchUi.WatchFace {
     // the state of this View and prepare it to be shown. This includes
     // loading resources into memory.
     function onShow() as Void {
+        reviewPrompt.resume();
     }
 
     // Update the view
@@ -31,14 +33,17 @@ class MiniChronoView extends WatchUi.WatchFace {
     // state of this View here. This includes freeing resources from
     // memory.
     function onHide() as Void {
+        reviewPrompt.pause();
     }
 
     // The user has just looked at their watch. Timers and animations may be started here.
     function onExitSleep() as Void {
+        reviewPrompt.resume();
     }
 
     // Terminate any active timers and prepare for slow updates.
     function onEnterSleep() as Void {
+        reviewPrompt.pause();
     }
 
     function onSettingsChanged() {

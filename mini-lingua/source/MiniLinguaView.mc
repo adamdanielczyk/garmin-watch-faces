@@ -5,6 +5,7 @@ import Toybox.System;
 import Toybox.WatchUi;
 
 class MiniLinguaView extends WatchUi.WatchFace {
+    private var reviewPrompt = new ReviewPrompt();
     function initialize() {
         WatchFace.initialize();
     }
@@ -17,7 +18,9 @@ class MiniLinguaView extends WatchUi.WatchFace {
     // Called when this View is brought to the foreground. Restore
     // the state of this View and prepare it to be shown. This includes
     // loading resources into memory.
-    function onShow() as Void {}
+    function onShow() as Void {
+        reviewPrompt.resume();
+    }
 
     // Update the view
     function onUpdate(dc as Dc) as Void {
@@ -28,13 +31,19 @@ class MiniLinguaView extends WatchUi.WatchFace {
     // Called when this View is removed from the screen. Save the
     // state of this View here. This includes freeing resources from
     // memory.
-    function onHide() as Void {}
+    function onHide() as Void {
+        reviewPrompt.pause();
+    }
 
     // The user has just looked at their watch. Timers and animations may be started here.
-    function onExitSleep() as Void {}
+    function onExitSleep() as Void {
+        reviewPrompt.resume();
+    }
 
     // Terminate any active timers and prepare for slow updates.
-    function onEnterSleep() as Void {}
+    function onEnterSleep() as Void {
+        reviewPrompt.pause();
+    }
 
     function onSettingsChanged() {
         (View.findDrawableById("MiniLinguaTime") as MiniLinguaTime).onSettingsChanged();

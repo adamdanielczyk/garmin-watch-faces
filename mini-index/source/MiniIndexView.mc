@@ -6,6 +6,7 @@ import Toybox.Time;
 import Toybox.WatchUi;
 
 class MiniIndexView extends WatchUi.WatchFace {
+    private var reviewPrompt = new ReviewPrompt();
     private var lowPower = false;
     private var accent;
     private var showDate;
@@ -35,8 +36,10 @@ class MiniIndexView extends WatchUi.WatchFace {
         if (value > 255) { return 255; }
         return value.toNumber();
     }
-    function onEnterSleep() { lowPower = true; WatchUi.requestUpdate(); }
-    function onExitSleep() { lowPower = false; WatchUi.requestUpdate(); }
+    function onShow() { reviewPrompt.resume(); }
+    function onHide() { reviewPrompt.pause(); }
+    function onEnterSleep() { reviewPrompt.pause(); lowPower = true; WatchUi.requestUpdate(); }
+    function onExitSleep() { lowPower = false; WatchUi.requestUpdate(); reviewPrompt.resume(); }
 
     function onUpdate(dc) {
         dc.clearClip();
