@@ -1,6 +1,7 @@
 # Garmin Watch Faces
 
-Source code for the published Mini Chrono, Mini Lingua and Mini Glyphs watch faces, plus Mini Index, submitted for Connect IQ Store review.
+Four independent Monkey C watch-face projects. Mini Index has been submitted for
+Store review; the other three are published.
 
 | Watch face | Source | Download |
 | --- | --- | --- |
@@ -9,89 +10,55 @@ Source code for the published Mini Chrono, Mini Lingua and Mini Glyphs watch fac
 | Mini Index | [mini-index](mini-index/) | [Connect IQ Store](https://apps.garmin.com/apps/71d8d765-534d-406b-97d9-532d3d5319c7) |
 | Mini Lingua | [mini-lingua](mini-lingua/) | [Connect IQ Store](https://apps.garmin.com/en-US/apps/6ba344de-c869-4ebe-9504-e8c7d2cc3320) |
 
-Each folder is an independent Monkey C project with its own `manifest.xml`, `monkey.jungle`, `source/`, and `resources/`. Supported watches are listed in that project's manifest.
-
-Each project's README documents its display constraints, existing device omissions, and compatibility checks: [Chrono](mini-chrono/README.md), [Lingua](mini-lingua/README.md), [Glyphs](mini-glyphs/README.md), and [Index](mini-index/README.md).
-
-## Review requests
-
-On watches with Garmin's native review API, each face offers a rating after at
-least two weeks and 14 observed days of use. Later opportunities are spaced four,
-eight, then twelve weeks apart. Garmin decides whether each request is eligible;
-its SDK does not report whether a rating was submitted or dismissed.
-
-Requests are checked when the face appears or wakes, only between 09:00 and 20:00
-local time with a phone connected and Do Not Disturb off where available. A late
-response after the face hides or sleeps is ignored. Failed or denied requests
-retry no sooner than 24 hours later. The schedule is stored per face and survives
-updates; existing installations start counting after this update. Older watches
-without the review API keep their normal behavior. There is no custom review UI.
-
-## Device support policy
-
-Support devices where the face keeps its intended appearance using the existing layout and ordinary scaling. Visual quality and low maintenance take priority over the number of supported watches. API eligibility and successful compilation alone do not establish support.
-
-- Treat physical display cutouts, obstructing analog hands, unusual geometry and screens that require cramped or substantially reduced content as reasons to exclude a device. A design limitation is sufficient; a crash or clipping defect is not required.
-- Keep smaller conventional displays when the existing layout remains attractive and readable. Size, model age and assumed popularity alone do not determine support.
-- Prefer a small shared fix when it improves the existing layout across a display class. Device-specific layouts, legacy API paths and hardware workarounds are outside routine maintenance; pursue them only when explicitly requested.
-- Keep new or unreviewed devices unsupported until their hardware fits the policy and representative native checks establish layout, settings and low-power behavior. Reuse evidence for equivalent displays; inspect new geometry or hardware explicitly. An SDK update is a review trigger, not an instruction to expand the manifest.
-- For a fit report, reproduce it where practical, then choose a shared fix or exclusion. Record the reason in the affected face's README and update its manifest and display profiles together. Index exclusions also belong in `device-exclusions.json` so its audit recognizes the decision.
-
-Existing per-face compatibility decisions remain in their READMEs. Apply this policy when adding or reviewing support; it does not by itself remove existing targets from other faces. Preserve Glyphs' intentional AMOLED-only design.
+Each project's `manifest.xml` lists supported devices. Its README records display
+constraints and compatibility decisions: [Chrono](mini-chrono/README.md),
+[Glyphs](mini-glyphs/README.md), [Index](mini-index/README.md),
+[Lingua](mini-lingua/README.md).
 
 ## Development setup
 
-The workflow uses the command line and works without an IDE.
-
-1. Install Python 3.9 or newer for this repository's CLI helper. It uses only the Python standard library. Garmin's compiler and simulator loader run on Java; install a Java runtime supported by your SDK. Java 21 has been verified with SDK 9.3.0 for these projects.
-2. Install [Garmin's Connect IQ SDK Manager](https://developer.garmin.com/connect-iq/sdk/), then use it to download an SDK and the device definitions you need.
-3. Create a local `.ciq.local.json` file with the path to your existing signing key:
+1. Install Python 3.9+, a Java runtime supported by your Garmin SDK, and
+   [Connect IQ SDK Manager](https://developer.garmin.com/connect-iq/sdk/).
+   Download an SDK and the device definitions you need. Java 21 is verified with SDK 9.3.0.
+2. Keep your existing signing key outside the repository. Configure its path in
+   the ignored `.ciq.local.json`:
 
    ```json
    {
      "developerKey": "/absolute/path/outside/this/repository/developer_key"
    }
    ```
+3. Run `./scripts/ciq doctor` to check Python, Java, SDK tools and key presence.
+   A build verifies the key and selected device definition.
 
-The helper discovers the active SDK from the SDK Manager's `current-sdk.cfg` on macOS and Linux. For another SDK location, add an `sdk` path to the local JSON file. `CIQ_SDK` and `CIQ_DEVELOPER_KEY` environment variables override local configuration. If no SDK is configured or discovered, the helper looks for Garmin's tools on `PATH`.
+The helper discovers the active SDK from SDK Manager's `current-sdk.cfg` on
+macOS/Linux. Set `sdk` in the JSON file for another location, or use `CIQ_SDK` and
+`CIQ_DEVELOPER_KEY` to override configuration. Otherwise tools are resolved from
+`PATH`. Builds need write access to Garmin's SDK/data directories.
 
-`.ciq.local.json` is ignored by Git. Keep the key itself outside this repository. Use your existing developer key when preparing updates to the published watch faces; generating a new development key is unnecessary when you already have one.
+See Garmin's [command-line setup guide](https://developer.garmin.com/connect-iq/reference-guides/monkey-c-command-line-setup/)
+for SDK setup and creating a key for a new application.
 
-Check the setup before building:
+## Build, run and test
 
-```sh
-./scripts/ciq doctor
-```
-
-This checks Python, Java, the compiler, simulator launch tools, and signing-key presence. A successful build is still needed to verify that the key is valid and the selected device definition is installed. Agents running with filesystem restrictions need access to Garmin's SDK and data directories: the compiler generates SDK files even when the project output is inside this repository.
-
-See Garmin's [command-line setup guide](https://developer.garmin.com/connect-iq/reference-guides/monkey-c-command-line-setup/) for SDK setup and generating a development key with OpenSSL.
-
-## Build and run
-
-Run these commands from the repository root. The examples use `venu3`, which is supported by all four projects; its device definition must be installed in the SDK Manager.
+Run from the repository root; `venu3` is supported by all four faces.
 
 ```sh
-# List a project's supported product IDs; no SDK or signing key needed.
-./scripts/ciq devices mini-chrono
-
-# Build one watch face for one device.
+./scripts/ciq devices mini-chrono   # No SDK or key needed
 ./scripts/ciq build mini-chrono venu3
-./scripts/ciq build mini-lingua venu3
-./scripts/ciq build mini-glyphs venu3
-```
-
-Builds are written to `build/<face>/<device>/<face>.prg`. To preview a watch face, start the simulator in one terminal, then build and load it from another:
-
-```sh
 ./scripts/ciq simulator
-```
-
-```sh
+# In another terminal:
 ./scripts/ciq run mini-chrono venu3
+./scripts/ciq test mini-chrono venu3
 ```
 
-The `run` command rebuilds before loading the app and stays attached to the simulator session. Use Ctrl-C to detach the terminal. In the simulator, check the rendered time, settings, and sleep behavior. For changes affecting device layouts, check the affected screen sizes and display types as well.
+Builds go to `build/<face>/<device>/<face>.prg`. `run` rebuilds and stays attached;
+Ctrl-C detaches the terminal. All four faces have review-scheduling tests; Glyphs
+and Index also have rendering tests. Run simulator jobs sequentially.
+
+[Verification](docs/verification.md) covers settings, representative displays,
+sleep/AOD, captures, burn-in checks and simulator recovery.
+[AGENTS.md](AGENTS.md) contains maintenance instructions.
 
 ## Export
 
@@ -99,27 +66,57 @@ The `run` command rebuilds before loading the app and stays attached to the simu
 ./scripts/ciq export mini-chrono
 ```
 
-This invokes Garmin's compiler in export mode for the project's manifest targets and writes `build/mini-chrono/mini-chrono.iq`. Install the required device definitions first. Export creates a local package from a neutral temporary checkout, with release compilation and a decompressed-package privacy check (`bsdtar` required). Upload it separately to the existing Store listing after review.
+This builds every manifest target and writes `build/mini-chrono/mini-chrono.iq`.
+All target definitions must be installed. Export uses release compilation from a
+neutral temporary directory and checks the decompressed package for private paths
+(`bsdtar` required). Upload the package separately to its existing Store listing.
 
-The manifests exclude the former `system8preview` beta target and the unavailable `vivolife` definition. Per-face READMEs document compatibility exclusions.
+The manifests exclude the former `system8preview` beta target and unavailable
+`vivolife` definition; per-face READMEs record other exclusions.
 
-## Working with agents
+## Review requests
 
-[AGENTS.md](AGENTS.md) describes project boundaries and validation expectations. All four faces have native review-scheduling tests; Glyphs and Index also have rendering regression tests: `./scripts/ciq test <face> <device>`. See [verification workflow](docs/verification.md) for test logs, settings-schema transfer, screenshots and 24-hour burn-in checks. Compilation, simulator checks and hardware validation should be reported separately.
+On supported watches, Garmin's native rating screen becomes eligible after two
+weeks and 14 observed usage days. Subsequent opportunities follow four, eight,
+then twelve weeks apart. Garmin decides whether each request may appear; its SDK
+does not report whether the user rated or dismissed it.
 
-## Store assets and release handoff
+Checks run when the face appears or wakes, between 09:00 and 20:00 local time,
+with a phone connected and Do Not Disturb off where available. Responses arriving
+after the face hides or sleeps are ignored. Failed/denied requests wait at least
+24 hours before retrying. Each face preserves its schedule across updates;
+existing installations start counting with this feature. Unsupported watches
+keep their normal behavior. There is no custom review interface.
 
-[Store workflow](docs/store-listings.md) covers reference framing, native captures,
-listing copy, asset validation and release handoff. [Verification](docs/verification.md)
-covers simulator settings, capture failures and evidence limits.
+## Device support policy
+
+Support hardware where the existing layout and ordinary scaling preserve the
+face's appearance. Visual quality and low maintenance take priority over device
+count; API eligibility and compilation alone do not establish support.
+
+- Exclude physical cutouts, obstructing analog hands or unusual geometry when
+  they require cramped content or a substantially reduced layout. A design
+  limitation is sufficient reason; a reproduced crash or clipping defect is unnecessary.
+- Keep smaller conventional displays when they remain readable and attractive.
+  Size, age and assumed popularity alone do not decide support.
+- Prefer fixes shared by a display class. Device-specific layouts, legacy API
+  paths and hardware workarounds require an explicit request.
+- Keep new targets unsupported until hardware review and representative native
+  checks establish layout, settings and low-power behavior. Reuse evidence for
+  equivalent displays; inspect new geometry separately. SDK updates trigger review,
+  not automatic manifest expansion.
+- For fit reports, reproduce where practical, then choose a shared fix or exclusion.
+  Record the reason in the face's README and update its manifest/display profiles.
+  Index exclusions also belong in `device-exclusions.json`.
+
+Existing per-face decisions remain in effect; this policy does not remove targets
+from other faces. Preserve Glyphs' AMOLED-only design.
+
+## Store assets
+
+[Store workflow](docs/store-listings.md) covers listing copy, screenshots and release
+handoff. Validate assets without an SDK:
 
 ```sh
-# Run the SDK-free local check before handing over Store assets.
 python3 scripts/check-store-assets
-# Recompose images from saved native captures.
-python3 scripts/prepare-index-store-assets
 ```
-
-The local asset check needs Python only. Native builds, device metadata checks and
-simulator tests still require a local Garmin SDK and signing key; the asset check
-does not replace them.

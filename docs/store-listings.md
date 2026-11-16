@@ -1,139 +1,101 @@
 # Connect IQ Store workflow
 
-Canonical listing text and the workflow for preparing Store assets.
-Descriptions must fit Garmin’s 4,000-character limit.
+## Listing copy
 
-| Face | Listing description |
+Keep one complete `description.txt` per face, within Garmin's 4,000-character limit.
+
+| Face | Description |
 | --- | --- |
 | Mini Chrono | [description.txt](../mini-chrono/store-assets/description.txt) |
-| Mini Lingua | [description.txt](../mini-lingua/store-assets/description.txt) |
 | Mini Glyphs | [description.txt](../mini-glyphs/store-assets/description.txt) |
 | Mini Index | [description.txt](../mini-index/store-assets/description.txt) |
+| Mini Lingua | [description.txt](../mini-lingua/store-assets/description.txt) |
 
-Each face has one complete description covering its implemented features. Verify
-copy against its settings and renderer: Lingua uses English exact-minute text;
-Glyphs uses English phrases rounded to five minutes and targets AMOLED displays.
-Chrono and Lingua do not implement Index's moving ambient layout.
+Check claims against settings and rendering: Lingua uses English exact-minute
+text; Glyphs uses English five-minute phrases and is AMOLED-only. Chrono and
+Lingua lack Index's moving ambient layout. Verify defaults, languages, permissions
+and display modes. Battery-life claims require measurements; refer users to
+Compatible Devices rather than implying universal support.
+
+Use current release status supplied by the user or verified in the Store.
+Submission does not establish approval. Create version-specific copy only when
+requested. Upload text contains no Markdown wrappers or maintenance notes.
 
 ## Asset structure
 
-Keep each face's Store materials in its own `store-assets/` directory. Preserve
-final images and their native source captures alongside the code so future updates
-can reuse the same framing and accurately reproduce the appearance.
+Keep each face's assets in its `store-assets/` directory:
 
 | Path | Purpose |
 | --- | --- |
-| `README.md` | Listing link, image inventory, device/time/settings and reproduction steps |
-| `title.txt` | Plain text to paste into the title field |
-| `description.txt` | One complete, current description to paste into the Store |
-| `cover.png` | Final cover image |
-| `screen-<variant>.png` | Final screenshot, named for the settings it demonstrates |
-| `raw/<device>-<variant>.png` | Original native capture before framing or resizing |
-| `preview.png` | Optional comparison sheet for review, not upload |
+| `README.md` | Listing link, image inventory and capture/reproduction details |
+| `title.txt`, `description.txt` | Copy to paste into the Store |
+| `cover.png` | Cover image |
+| `screen-<variant>.png` | Individual upload screenshot |
+| `raw/<device>-<variant>.png` | Original native capture |
+| `preview.png` | Optional comparison sheet; exclude from upload |
 
-Keep upload text free of Markdown wrappers or maintenance notes. Use Markdown for
-README documentation. Record only the information needed to identify and regenerate
-assets. Preserve established filenames and framing when updating a variant; use a
-new descriptive name when adding one. Git history retains superseded assets once
-committed, so parallel dated copies are unnecessary. Temporary experiments and
-compiled packages belong in ignored `build/`.
-
-Create image files and `raw/` when captures exist, rather than adding empty folders
-or placeholders. Chrono and Lingua currently preserve listing text only; Glyphs and Index include
-curated images and native captures. The local check validates all four text sets
-and both curated image sets; extend it when adding images for another face.
-
-## Per-face images
-
-[Index's asset README](../mini-index/store-assets/README.md) and
-[Glyphs' asset README](../mini-glyphs/store-assets/README.md) record native captures,
-variants and reproduction commands. Store links are in the repository README.
+Preserve filenames and framing when updating variants; Git retains old versions.
+Create image folders when captures exist. Chrono/Lingua currently contain text
+only; Glyphs/Index include curated images and captures. Their asset READMEs record
+variants and reproduction commands: [Glyphs](../mini-glyphs/store-assets/README.md),
+[Index](../mini-index/store-assets/README.md).
 
 ## Screenshot conventions
 
-- Use 12:30 for covers and previews. Mini Index uses 10:08 so its hands remain distinct.
-- Use the orange preset for every face's main cover image, keeping the collection consistent.
-- Preview screenshots may use other colors to demonstrate available options.
-- Match the established framing: cream Venu Sq 2 cover at 500 × 500 and black Venu 3
-  previews at 500 × 524, with an enlarged case and short cropped strap sections.
+- Time: 12:30, except Index at 10:08 to separate its hands.
+- Cover: orange preset, cream Venu Sq 2, 500 × 500.
+- Screenshots: black Venu 3, 500 × 524, enlarged case and short cropped straps.
+- [Mini Lingua](https://apps.garmin.com/apps/6ba344de-c869-4ebe-9504-e8c7d2cc3320)
+  is the framing reference. Compare downloaded source images, not screenshots
+  of the listing, for dimensions, case scale, crop and margins.
 
 ## Prepare or revise images
 
-1. Download the actual reference listing images. Compare their pixel dimensions,
-   watch-case scale, strap crop and margins at the same displayed size. A screenshot
-   of the listing explains the intent but is not the source image. Mini Lingua is
-   the framing reference. Reuse `scripts/prepare-index-store-assets` for the crop
-   and follow the screenshot conventions above.
-2. Keep every cover and color variant at its face's designated time.
-   For Index, the first three screenshots use date off and orange/none, sage/four, blue/twelve
-   markers. The fourth uses custom lilac (#CC99FF), no markers and day 24.
-   Distinguish markings on the physical bezel from configurable dial markers.
-3. Capture the native renderer with deterministic inputs. `scripts/index-store-preview`
-   copies production drawing code into ignored `build/store-preview/`, overrides
-   time/settings, and uses a separate app ID. Use it only for screenshots; export
-   production from `mini-index/`. Frozen input fixtures must not change geometry,
-   fonts or rendering. Re-capture after drawing changes; framing-only changes can
-   reuse the same raw PNGs.
-4. Inspect the raw native image before compositing. Fix rendering defects in the
-   application rather than retouching its screenshots. For thin diagonal hands,
-   check native anti-aliasing, older API fallback and low-power behavior.
-5. Compose with `python3 scripts/prepare-index-store-assets`; it checks the outputs.
-   `--devices /path/to/Devices` selects another SDK device installation.
-   For copy-only changes, run `python3 scripts/check-store-assets`.
-6. Inspect every final image on both white and dark backgrounds, and compare the
-   framing beside the downloaded reference. Check strap ends, edge specks, halos,
-   simulator guide lines, hand edges and marker counts. Mechanical checks cannot
-   judge these. A circular display needs an alpha mask so its square PNG corners
-   do not cover the frame. Strip simulator guides from the frame only.
-7. Run `python3 scripts/check-store-assets`. It checks canonical descriptions,
-   native/final PNG dimensions, strict byte limits and asset privacy. Deliver
-   only the cover and four individual screen PNGs for upload; `preview.png` is a
-   review sheet. Completion requires visual inspection AND passing file checks.
+1. Follow the face's asset README for device, time and variant settings. Capture
+   through its isolated `scripts/*-store-preview` fixture, which fixes inputs and
+   uses a separate app ID under ignored `build/`. Preserve production drawing
+   code, fonts and geometry. Export releases from the production project.
+2. Save native PNGs in `raw/`. Re-capture after drawing changes; framing-only edits
+   may reuse existing captures. For capture problems, use
+   [simulator recovery](verification.md#recover-from-simulatorui-failures).
+3. Inspect raw images. Fix rendering defects in the app rather than retouching
+   face pixels. Check thin diagonals, native anti-aliasing, older-API fallback and
+   low-power rendering where affected.
+4. Run the face's `scripts/prepare-*-store-assets` command. Composition removes
+   frame guides/white canvas, masks round screens and applies the shared crop.
+   `--devices /path/to/Devices` selects another device installation.
+5. Inspect final images on light and dark backgrounds beside the reference.
+   Check strap edges, halos, guides, hand edges and markers. Physical bezel
+   markings are independent of configurable dial markers.
+6. Run `python3 scripts/check-store-assets`. Deliver the cover and four individual
+   screenshots; keep `preview.png` as a review sheet.
 
-## Write listing copy
-
-Maintain one `description.txt` per face, covering its implemented features. Use
-current user-provided release status; create version-specific copy only when asked.
-Check settings, defaults, time formatting, languages, permissions and display modes
-against that face's code. Describe capabilities plainly. Battery-life claims need
-measurements; use Compatible Devices instead of implying every Garmin is supported.
+For text-only changes, run just the asset check. It requires Python, not an SDK or
+key, and checks all four text sets plus the two curated image sets for file limits,
+dimensions and private metadata. Extend coverage when adding other image sets.
+Passing file checks does not replace visual inspection or native validation.
 
 ## Export and handoff
 
-- Rendering/source changes require a new production export and fresh visual evidence.
-  Cropping, compression, text and README edits do not require rebuilding a submitted app.
-- Export from the production project with `scripts/ciq`, then verify the final success and output path.
-  Report both manifest product count and SDK build-variant count when relevant; they
-  are different units, not two competing device-support totals.
-- Keep production `.iq` files under ignored `build/<face>/`. The screenshot fixture
-  `.prg` is never a release artifact. Record which source/rendering revision the
-  handoff covers; earlier packages can become stale after a visual fix.
-- Update the Store URL when the user supplies it, retaining the app's manifest ID.
-  A Store listing UUID is not the manifest application UUID. Record submission as
-  submission, and approval as approval, using the user's report or verified status.
-- Upload only when instructed. Local builds and asset preparation do not publish.
+- Source changes require a production export; rendering changes also require
+  fresh visual evidence. Text, framing and compression edits need no app rebuild.
+- Run `./scripts/ciq export <face>` and confirm success/output. Packages stay under
+  ignored `build/<face>/`; screenshot-fixture executables are never release artifacts.
+- Identify the source revision covered. When reporting coverage, distinguish
+  manifest product count from SDK build variants.
+- Preserve manifest IDs when updating Store URLs: Store UUIDs and app UUIDs differ.
+- Upload only on the user's instruction.
 
-## Automated coverage and limits
-
-Run `python3 scripts/check-store-assets` locally before handing over Store assets.
-It needs Python only, with no SDK or signing key. It catches oversized files, unexpected dimensions,
-duplicate description variants, personal paths and embedded image text/EXIF metadata.
-
-The SDK-dependent coverage check already exists: `scripts/check-index-devices`.
-Run it locally after compatibility/device-catalog changes. Native simulation is
-serial and interactive; the local asset check makes no claim to cover it. Geometry tests
-prove their assertions, not complete rendered appearance or physical-watch behavior.
+Device/catalog changes also need the checks in
+[verification](verification.md#coverage-policy).
 
 ## Export privacy
 
-Garmin `.iq` exports are compressed 7z packages. Searching the compressed bytes
-misses paths in their source-map XML. SDK 9.3 retains those XML files even with
-`monkeyc -e -r`; the release flag alone does not remove checkout paths.
+Garmin `.iq` files are compressed 7z packages. SDK 9.3 retains source-map XML with
+checkout paths even under `monkeyc -e -r`; searching compressed bytes misses them.
 
-`scripts/ciq export` copies the project to a neutral temporary path, builds with
-`-e -r`, and runs `scripts/check-release-privacy` before copying the package into
-`build/`. The check requires `bsdtar` (included on the verified macOS installation)
-and inspects decompressed files for home/workspace paths and local identity strings.
-Preserve the signed package as generated; editing or repacking its metadata is not the release process.
-Generic source filenames and temporary build paths can remain in Garmin's source
-maps. This check is specific to machine-path disclosure, not a general secret audit.
+`ciq export` builds from a neutral temporary directory and runs
+`scripts/check-release-privacy` on decompressed contents before copying the package
+to `build/`. This requires `bsdtar` and checks private paths/identity strings, not
+all possible secrets. Generic filenames and temporary paths may remain. Preserve
+the signed package as generated rather than repacking its metadata.

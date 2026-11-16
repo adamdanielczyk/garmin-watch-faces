@@ -2,27 +2,39 @@
 
 ## Project boundaries
 
-Treat each `mini-*` directory as an independent Connect IQ application. Classes with the same name in different projects are separate implementations. Keep changes within the requested face unless a shared tooling change is needed.
+Each `mini-*` directory is an independent Connect IQ app, including classes with
+the same name. Keep changes within the requested face unless shared tooling needs
+an update. Preserve manifest application IDs, Store links and persisted settings
+keys; devices, languages and permissions differ between faces.
 
-Preserve application IDs in `manifest.xml`, Store links, and persisted settings keys during maintenance. Device support, languages, and permissions are specific to each manifest; review their differences before applying a change across faces.
-
-Before changing device support, read the affected face's README for display constraints, existing omissions, and unresolved compatibility decisions. Update those notes when the compatibility policy changes.
-
-For device additions, SDK updates and fit reports, follow the design-first [device support policy](README.md#device-support-policy). Preserve each face's appearance and simple implementation; exclude challenging hardware that needs a special layout. New catalog entries require a support decision rather than automatic inclusion. Preserve Glyphs’ AMOLED-only policy. Run `python3 scripts/check-index-devices` for Index coverage and display-profile drift.
+For device additions, SDK updates or fit reports, read the affected face's README
+and follow the [device support policy](README.md#device-support-policy). Update its
+compatibility notes when decisions change. Preserve Glyphs' AMOLED-only policy;
+run `python3 scripts/check-index-devices` after Index device/profile changes.
 
 ## Build and validate
 
-Use the command-line workflow in [README.md](README.md). Run `./scripts/ciq doctor` to check local setup. SDK Manager discovery and the ignored `.ciq.local.json` supply local paths without an IDE. Builds need write access to Garmin's installed SDK/data directories as well as the repository. Build each affected face for an installed, supported device. For layout changes, also run the simulator on representative affected screen sizes and display types and check settings and sleep behavior.
+Use the [CLI workflow](README.md#development-setup), starting with
+`./scripts/ciq doctor`. Builds need write access to Garmin's SDK/data directories.
+Build each affected face on an installed, supported device. For layout changes,
+check representative screen sizes/display types, settings and sleep behavior.
 
-All four faces have native review-scheduling tests; Glyphs and Index also have rendering tests. Run `./scripts/ciq test <face> <device>` with the simulator running. Run simulator jobs sequentially. See [verification workflow](docs/verification.md) for settings-schema transfer, captures and burn-in checks. Distinguish successful compilation from simulator or physical-watch verification. If the SDK, device definitions, or signing key is unavailable, report the missing prerequisite and the checks that could not run.
+Run `./scripts/ciq test <face> <device>` with the simulator running; simulator jobs
+must be sequential. All faces have review-scheduling tests; Glyphs and Index also
+have rendering tests. [Verification](docs/verification.md) covers settings transfer,
+captures, burn-in and recovery. Read its recovery section before repeating a failed
+simulator UI action. Report compilation, simulator and physical-watch results
+separately, including missing prerequisites and checks that could not run.
 
-Keep developer keys outside the repository and compiled/test artifacts under the ignored `build/` directory. Curated Store images, native source captures and copy belong in each face’s `store-assets/`. Exporting produces a local package; Store uploads require the user's explicit instruction.
-
-For Store screenshots, framing, listing copy or release handoff, read [Store workflow](docs/store-listings.md). Run `python3 scripts/check-store-assets` after asset/copy edits. For simulator UI failures, read the recovery section in [verification](docs/verification.md) before retrying the same action.
+Keep keys outside the repository and generated artifacts under ignored `build/`.
+Curated Store images, native captures and copy belong in each face's `store-assets/`.
+For screenshots, listing copy or release handoff, follow the
+[Store workflow](docs/store-listings.md); run `python3 scripts/check-store-assets`
+after asset/copy edits. Export makes a local package; Store uploads require the
+user's explicit instruction.
 
 ## Documentation
 
-Write concise documentation for users and maintainers: setup, workflows, useful
-design decisions and known limitations. Describe the current project rather than
-the development conversation. Use relative paths or generic placeholders in
-examples; keep local configuration and temporary logs outside tracked docs.
+Document current setup, workflows, decisions and limitations. Keep conversation
+history and temporary logs out of tracked docs; use relative paths or generic
+placeholders in examples.
