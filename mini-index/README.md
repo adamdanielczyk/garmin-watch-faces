@@ -70,5 +70,5 @@ From the repository root, with the simulator running:
 ./scripts/ciq run mini-index venu3
 ```
 
-See [verification](../docs/verification.md). Submitted for Store review:
+See [verification](../docs/verification.md). Available in the Connect IQ Store:
 [listing](https://apps.garmin.com/apps/71d8d765-534d-406b-97d9-532d3d5319c7).

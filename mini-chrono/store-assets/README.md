@@ -9,10 +9,15 @@
 
 ## Images
 
-Store images have not yet been preserved in this folder. When updating them,
-retain the final `cover.png` and `screen-<variant>.png` files alongside the text,
-and native captures in `raw/`. Record the device, time, settings and reproduction
-command here. Keep existing images until replacements have been reviewed.
+[cover.png](cover.png) is the original 500 × 500 cover downloaded from the
+[Store image](https://services.garmin.com/appsLibraryExternalServices/api/icons/822a498c-ca3c-42bb-9d7f-5f90bc018f54).
+Embedded text metadata was removed without changing image pixels. It shows the cream Venu Sq 2 at 12:30 with an orange accent and is also used in
+the repository's main README.
+
+Other Store screenshots and native captures have not yet been preserved here.
+When updating images, retain the final `screen-<variant>.png` files and native
+captures in `raw/`. Record the settings and reproduction command here; the
+downloaded cover has no local capture fixture.
 
 Use the shared [asset structure and workflow](../../docs/store-listings.md)
 for naming, limits, framing and validation. Text files contain only the copy to

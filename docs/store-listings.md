@@ -35,9 +35,9 @@ Keep each face's assets in its `store-assets/` directory:
 | `preview.png` | Optional comparison sheet; exclude from upload |
 
 Preserve filenames and framing when updating variants; Git retains old versions.
-Create image folders when captures exist. Chrono/Lingua currently contain text
-only; Glyphs/Index include curated images and captures. Their asset READMEs record
-variants and reproduction commands: [Glyphs](../mini-glyphs/store-assets/README.md),
+All four faces include covers used by the main README. Chrono/Lingua covers were
+downloaded from the Store; Glyphs/Index also include curated screenshots and
+native captures. Their asset READMEs record variants and reproduction commands: [Glyphs](../mini-glyphs/store-assets/README.md),
 [Index](../mini-index/store-assets/README.md).
 
 ## Screenshot conventions
@@ -71,8 +71,9 @@ variants and reproduction commands: [Glyphs](../mini-glyphs/store-assets/README.
    screenshots; keep `preview.png` as a review sheet.
 
 For text-only changes, run just the asset check. It requires Python, not an SDK or
-key, and checks all four text sets plus the two curated image sets for file limits,
-dimensions and private metadata. Extend coverage when adding other image sets.
+key, and checks all four text sets and covers, plus Glyphs/Index screenshots and
+native captures, for file limits, dimensions and private metadata. Extend coverage when adding
+other image sets.
 Passing file checks does not replace visual inspection or native validation.
 
 ## Export and handoff

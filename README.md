@@ -1,14 +1,13 @@
 # Garmin Watch Faces
 
-Four independent Monkey C watch-face projects. Mini Index has been submitted for
-Store review; the other three are published.
+Four independent Monkey C watch faces for Garmin watches, all available in the
+[Connect IQ Store](https://apps.garmin.com/developer/4b8f47cc-a9ba-4dd2-9d23-465cc6874999/apps).
 
-| Watch face | Source | Download |
-| --- | --- | --- |
-| Mini Chrono | [mini-chrono](mini-chrono/) | [Connect IQ Store](https://apps.garmin.com/en-US/apps/a76c8507-2093-4d44-b8fa-e8f30d6f8927) |
-| Mini Glyphs | [mini-glyphs](mini-glyphs/) | [Connect IQ Store](https://apps.garmin.com/en-US/apps/0f1c6fae-9d28-4be9-909c-eaa7168f8276) |
-| Mini Index | [mini-index](mini-index/) | [Connect IQ Store](https://apps.garmin.com/apps/71d8d765-534d-406b-97d9-532d3d5319c7) |
-| Mini Lingua | [mini-lingua](mini-lingua/) | [Connect IQ Store](https://apps.garmin.com/en-US/apps/6ba344de-c869-4ebe-9504-e8c7d2cc3320) |
+| Mini Chrono | Mini Glyphs | Mini Index | Mini Lingua |
+| :---: | :---: | :---: | :---: |
+| [<img src="mini-chrono/store-assets/cover.png" width="190" alt="Mini Chrono: orange hours and cream minutes on black">](https://apps.garmin.com/apps/a76c8507-2093-4d44-b8fa-e8f30d6f8927) | [<img src="mini-glyphs/store-assets/cover.png" width="190" alt="Mini Glyphs: highlighted English time phrases in a letter grid">](https://apps.garmin.com/apps/0f1c6fae-9d28-4be9-909c-eaa7168f8276) | [<img src="mini-index/store-assets/cover.png" width="190" alt="Mini Index: two analog hands on a black dial">](https://apps.garmin.com/apps/71d8d765-534d-406b-97d9-532d3d5319c7) | [<img src="mini-lingua/store-assets/cover.png" width="190" alt="Mini Lingua: twelve thirty written in English">](https://apps.garmin.com/apps/6ba344de-c869-4ebe-9504-e8c7d2cc3320) |
+| Large digital time | English word-clock grid | Minimal analog time | English exact-minute text |
+| [Source](mini-chrono/) · [Download](https://apps.garmin.com/apps/a76c8507-2093-4d44-b8fa-e8f30d6f8927) | [Source](mini-glyphs/) · [Download](https://apps.garmin.com/apps/0f1c6fae-9d28-4be9-909c-eaa7168f8276) | [Source](mini-index/) · [Download](https://apps.garmin.com/apps/71d8d765-534d-406b-97d9-532d3d5319c7) | [Source](mini-lingua/) · [Download](https://apps.garmin.com/apps/6ba344de-c869-4ebe-9504-e8c7d2cc3320) |
 
 Each project's `manifest.xml` lists supported devices. Its README records display
 constraints and compatibility decisions: [Chrono](mini-chrono/README.md),
